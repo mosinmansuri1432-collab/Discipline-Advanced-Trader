@@ -1406,6 +1406,27 @@ saveDatabase();
 SCREENSHOTS
 =========================================================*/
 
+async function uploadImage(file){
+
+    const formData = new FormData();
+
+    formData.append("image", file);
+
+    const res = await fetch("/api/upload-image",{
+        method:"POST",
+        body:formData
+    });
+
+    const data = await res.json();
+
+    if(!data.success){
+        throw new Error(data.error);
+    }
+
+    return data.url;
+
+}
+
 function imageUpload(inputId,key,imageId){
 
 const input=document.getElementById(inputId);
@@ -1422,23 +1443,31 @@ function saveImage(file){
 
     if(!file) return;
 
-    const reader=new FileReader();
+   (async()=>{
 
-    reader.onload=e=>{
+    try{
 
-        journal[currentDate].screenshots[key]=e.target.result;
+        const imageUrl = await uploadImage(file);
 
-        img.src=e.target.result;
+        journal[currentDate].screenshots[key] = imageUrl;
 
-        img.style.display="block";
+        img.src = imageUrl;
 
-        img.style.pointerEvents="auto";
+        img.style.display = "block";
 
-        saveDatabase();
+        img.style.pointerEvents = "auto";
 
-    };
+        await saveDatabase();
 
-    reader.readAsDataURL(file);
+    }catch(err){
+
+        alert("Image upload failed!");
+
+        console.error(err);
+
+    }
+
+})();
 
 }
 
@@ -1569,21 +1598,51 @@ zone.addEventListener("paste",(e)=>{
 
 /* ---------- DELETE ---------- */
 
-removeBtn.addEventListener("click",(e)=>{
+removeBtn.addEventListener("click", async (e)=>{
 
     e.stopPropagation();
 
-    journal[currentDate].screenshots[key]="";
+    try{
 
-    img.src="";
+        const imageUrl = journal[currentDate].screenshots[key];
 
-    img.style.display="none";
+        if(imageUrl){
 
-    img.style.pointerEvents="none";
+            await fetch("/api/delete-image",{
 
-    input.value="";
+                method:"POST",
 
-    saveDatabase();
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+                    imageUrl
+                })
+
+            });
+
+        }
+
+        journal[currentDate].screenshots[key]="";
+
+        img.src="";
+
+        img.style.display="none";
+
+        img.style.pointerEvents="none";
+
+        input.value="";
+
+        await saveDatabase();
+
+    }catch(err){
+
+        console.error(err);
+
+        alert("Image delete failed!");
+
+    }
 
 });
 
