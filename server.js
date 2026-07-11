@@ -1,25 +1,43 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs");
-const path = require("path");
+
+const { createClient } = require("@supabase/supabase-js");
 
 const app = express();
 const PORT = 3000;
+
+
+
+const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_KEY
+);
+
+
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
-const DB_PATH = path.join(__dirname, "database", "trades.json");
-
 // Load Data
-app.get("/api/trades", (req, res) => {
+
+app.get("/api/trades", async (req, res) => {
 
     try {
 
-        const data = fs.readFileSync(DB_PATH, "utf8");
+        const { data, error } = await supabase
+            .from("trades")
+            .select("journal")
+            .limit(1)
+            .single();
 
-        res.json(JSON.parse(data));
+        if (error || !data) {
+            return res.json({});
+        }
+
+        res.json(data.journal);
 
     } catch (err) {
 
@@ -30,14 +48,24 @@ app.get("/api/trades", (req, res) => {
 });
 
 // Save Data
-app.post("/api/trades", (req, res) => {
+
+app.post("/api/trades", async (req, res) => {
 
     try {
 
-        fs.writeFileSync(
-            DB_PATH,
-            JSON.stringify(req.body, null, 2)
-        );
+        await supabase.from("trades").delete().neq("id", 0);
+
+        const { error } = await supabase
+            .from("trades")
+            .insert([
+                {
+                    journal: req.body
+                }
+            ]);
+           
+            
+
+        if (error) throw error;
 
         res.json({
             success: true
