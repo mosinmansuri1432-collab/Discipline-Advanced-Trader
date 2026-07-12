@@ -1428,91 +1428,96 @@ WEEKLY REPORTS
 END DASHBOARD ANALYTICS CENTER
 ========================================================== -->
 
-<!-- Continue in Part 3 --><!-- ===========================
+<!--=========================================================
+PART 19
+DASHBOARD POLISH V3.0
 TRADE SEARCH & FILTER
-=========================== -->
+=========================================================-->
 
 <section class="card">
 
-<div class="filter-header">
+    <div class="filter-header">
+        <h2 class="card-title">
+            <i class="fa-solid fa-magnifying-glass-chart"></i>
+            Trade Search & Filter
+        </h2>
+    </div>
 
-<h2 class="card-title">
+    <div class="filter-grid">
 
-Trade Search & Filter
+        <!-- Search Symbol -->
+        <div>
+            <label>Search Symbol</label>
 
-</h2>
+            <input
+                type="text"
+                id="searchTrade"
+                placeholder="Ex: NIFTY, BANKNIFTY, SENSEX">
+        </div>
 
-</div>
+        <!-- Direction -->
+        <div>
+            <label>Direction</label>
 
-<div class="filter-grid">
+            <select id="filterDirection">
+                <option value="All">All</option>
+                <option value="Buy">Buy</option>
+                <option value="Sell">Sell</option>
+            </select>
+        </div>
 
-<div>
+        <!-- Result -->
+        <div>
+            <label>Result</label>
 
-<label>Search Pair</label>
+            <select id="filterResult">
+                <option value="All">All</option>
+                <option value="Profit">Profit</option>
+                <option value="Loss">Loss</option>
+            </select>
+        </div>
 
-<input
-type="text"
-id="searchTrade"
-placeholder="Ex : XAUUSD">
+        <!-- Setup -->
+        <div>
+            <label>Setup</label>
 
-</div>
+            <select id="filterSetup">
+                <option value="All">All Setup</option>
+                <option value="A1+">A1+ (85% Retest Setups)</option>
+                <option value="A1">A1 (62% Retest Setups)</option>
+                <option value="B1">B1+ (Gap Up/Down & Wick Setups)</option>
+                <option value="B2+">B2+ (Zone/Trend Setups)</option>
+                <option value="Gap Down">Gap Down Setups</option>
+                <option value="Gap Up">Gap Up Setups</option>
+                <option value="Wick">Wick Setups</option>
+                <option value="Reversal">Reversal Setups</option>
+                <option value="Continue">Continue / Confuse Setups</option>
+                <option value="15 Min">15 Min Candle Break Setups</option>
+            </select>
+        </div>
 
-<div>
+    </div>
 
-<label>Direction</label>
+    <!-- Search Buttons -->
+    <div class="filter-actions">
 
-<select id="filterDirection">
+        <button id="searchTradeBtn" class="btn primary-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Search
+        </button>
 
-<option value="All">All</option>
+        <button id="clearTradeBtn" class="btn secondary-btn">
+            <i class="fa-solid fa-rotate-left"></i>
+            Clear
+        </button>
 
-<option value="Buy">Buy</option>
-
-<option value="Sell">Sell</option>
-
-</select>
-
-</div>
-
-<div>
-
-<label>Result</label>
-
-<select id="filterResult">
-
-<option value="All">All</option>
-
-<option value="Profit">Profit</option>
-
-<option value="Loss">Loss</option>
-
-</select>
-
-</div>
-
-<div>
-
-<label>Setup</label>
-
-<select id="filterSetup">
-
-    <option value="All">All Setup</option>
-    <option value="A1+">A1+ (85% Retres Setups)</option>
-    <option value="A1">A1 (62% Retres Setups)</option>
-    <option value="B1">B1+ (Gap Up/Down & Wick Setups)</option>
-    <option value="B2+">B2+ (Zone/Trend Setups)</option>
-    <option value="Gap Down">Gap Down Setups</option>
-    <option value="Gap Up">Gap Up Setups</option>
-    <option value="Wick">Wick Setups</option>
-    <option value="Reversal">Reversal Setups</option>
-    <option value="Continue">Continue / Confuse Setups</option>
-    <option value="15 Min">15 Min Candle Breck Setups</option>
-</select>
-
-</div>
-
-</div>
+    </div>
 
 </section>
+
+<!--=========================================================
+END PART 19
+=========================================================-->
 
 <!-- ===========================
 SELECTED DATE DETAILS

@@ -3393,3 +3393,67 @@ font-size:40px;
 
 }
 
+/*=========================================================
+PART 19
+DASHBOARD POLISH V3.0
+TRADE SEARCH & FILTER
+=========================================================*/
+
+.filter-actions{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+    margin-top:20px;
+    flex-wrap:wrap;
+}
+
+.filter-actions .btn{
+    min-width:170px;
+    padding:12px 22px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.primary-btn{
+    background:#7c3aed;
+    color:#fff;
+}
+
+.primary-btn:hover{
+    background:#6d28d9;
+    transform:translateY(-2px);
+}
+
+.secondary-btn{
+    background:#374151;
+    color:#fff;
+}
+
+.secondary-btn:hover{
+    background:#4b5563;
+    transform:translateY(-2px);
+}
+
+.filter-actions i{
+    margin-right:8px;
+}
+
+.filter-grid input,
+.filter-grid select{
+    transition:.3s;
+}
+
+.filter-grid input:focus,
+.filter-grid select:focus{
+    border-color:#7c3aed;
+    box-shadow:0 0 0 3px rgba(124,58,237,.25);
+}
+
+/*=========================================================
+END PART 19
+=========================================================*/
