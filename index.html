@@ -18,8 +18,11 @@
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-<link rel="stylesheet"
-href="style.css">
+
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="style.css">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -237,13 +240,7 @@ PREMIUM SETUP MODULE
 
     </div>
 
-   <div id="setupDetails" style="display: none; padding: 20px; background: #151515; border: 1px solid #d4af37; border-radius: 10px; margin-top: 20px;">
-    <h2 id="detailTitle" style="color: #d4af37;"></h2>
-    <span id="detailBadge" style="color: #19d76b;"></span>
-    <p id="setupNote" style="color: #b9b9b9; margin: 10px 0;"></p>
-    <ul id="setupRules" style="color: #ffffff; list-style: none;"></ul>
-    <button id="resetSetup" style="padding: 10px; cursor: pointer;">Close</button>
-</div>
+
 
     <!-- =========================
     DETAILS PANEL
@@ -317,6 +314,142 @@ SETUP CHECKLIST
     </div>
 
 </section> 
+
+<!-- =========================
+DISCIPLINE CENTER
+========================= -->
+
+<section id="disciplineSection" class="discipline-section">
+
+    <div class="discipline-container">
+
+        <div class="discipline-header">
+
+            <h2>🎯 Discipline Center</h2>
+
+            <p>
+                Follow Your Trading Rules Before Taking Any Trade
+            </p>
+
+        </div>
+
+        <!-- =========================
+        DISCIPLINE CARDS
+        ========================= -->
+
+        <div class="discipline-grid" id="disciplineGrid">
+
+            <div class="discipline-card"
+                 data-card="rules">
+
+                <h3>📋 Today's Rules</h3>
+
+                <p>Trading Checklist</p>
+
+            </div>
+
+            <div class="discipline-card"
+                 data-card="score">
+
+                <h3>⭐ Discipline Score</h3>
+
+                <p>Today's Performance</p>
+
+            </div>
+
+            <div class="discipline-card"
+                 data-card="daily">
+
+                <h3>🎯 Daily Target</h3>
+
+                <p>Today's Goal</p>
+
+            </div>
+
+            <div class="discipline-card"
+                 data-card="weekly">
+
+                <h3>📅 Weekly Target</h3>
+
+                <p>Weekly Goal</p>
+
+            </div>
+
+            <div class="discipline-card"
+                 data-card="monthly">
+
+                <h3>📈 Monthly Target</h3>
+
+                <p>Monthly Goal</p>
+
+            </div>
+
+            <div class="discipline-card"
+                 data-card="consistency">
+
+                <h3>🔥 Consistency Score</h3>
+
+                <p>Discipline Progress</p>
+
+            </div>
+
+        </div>
+
+        <!-- =========================
+        DETAILS
+        ========================= -->
+<div id="disciplineDetails"
+     class="discipline-details">
+
+    <!-- HEADER -->
+
+    <div class="discipline-detail-header">
+
+        <h2 id="disciplineTitle"></h2>
+
+        <div id="disciplineBadge"
+             class="discipline-badge">
+        </div>
+
+    </div>
+
+    <!-- CONTENT -->
+
+    <ul id="disciplineContent"
+        class="discipline-content">
+
+    </ul>
+
+  <!-- =========================
+DISCIPLINE SCORE RESULT
+========================= -->
+
+<div id="disciplineScoreResult"
+     class="discipline-score-result">
+
+</div>
+
+    <!-- NOTE -->
+
+    <div id="disciplineNote"
+         class="discipline-note">
+
+    </div>
+
+</div>
+
+      <button
+    type="button"
+    id="resetDiscipline"
+    class="discipline-reset">
+
+    🔄 Reset Discipline
+
+</button>  
+
+    </div>
+
+</section>
 
 <!-- ===========================
 TRADE TABLE
@@ -709,6 +842,7 @@ SCREENSHOTS
 </div>
 
 </section>
+
 
 <!-- ===========================
 CALENDAR
@@ -1428,6 +1562,7 @@ WEEKLY REPORTS
 END DASHBOARD ANALYTICS CENTER
 ========================================================== -->
 
+
 <!--=========================================================
 PART 19
 DASHBOARD POLISH V3.0
@@ -1679,9 +1814,20 @@ Designed for Personal Trading Performance
 
 </div>
 
+<script src="js/app.js"></script>
 <script src="script.js"></script>
 
-<script src="https://s3.tradingview.com/tv.js"></script>
+<script src="js/trades.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/notes.js"></script>
+<script src="js/psychology.js"></script>
+<script src="js/screenshots.js"></script>
+
+<script src="js/reports.js"></script>
+
+
+
 
 </body>
 

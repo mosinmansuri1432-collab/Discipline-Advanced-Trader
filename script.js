@@ -1,46 +1,6 @@
 
 
 /*=========================================================
-DISCIPLINE ADVANCED TRADER JOURNAL V2
-script.js
-Part 1
-=========================================================*/
-
-"use strict";
-
-/*=========================================================
-DATABASE
-=========================================================*/
-
-let journal = {};
-
-let currentDate = new Date().toISOString().split("T")[0];
-
-/*=========================================================
-LOAD DATABASE FROM SERVER
-=========================================================*/
-
-
-async function loadDatabase(){
-
-    try{
-
-        const response = await fetch("/api/trades");
-
-        journal = await response.json();
-
-    }
-    catch(err){
-
-        console.error("Database Load Error:", err);
-
-        journal = {};
-
-    }
-
-}
-
-/*=========================================================
 DASHBOARD REPORTS
 PART-1
 GLOBAL VARIABLES
@@ -303,19 +263,6 @@ document.getElementById("setupB2PL");
 const setupB2Rate =
 document.getElementById("setupB2Rate");
 
-/*=========================================================
-TODAY
-=========================================================*/
-
-const today = new Date();
-
-const yyyy = today.getFullYear();
-
-const mm = String(today.getMonth()+1).padStart(2,"0");
-
-const dd = String(today.getDate()).padStart(2,"0");
-
-currentDate = `${yyyy}-${mm}-${dd}`;
 
 journalDate.value = currentDate;
 
@@ -688,149 +635,882 @@ function loadSetup() {
   }
 }
 
-/*=========================================================
-LOAD TRADES & OPERATIONS
-=========================================================*/
-function loadTrades(trades = journal[currentDate].trades) {
-    tradeBody.innerHTML = "";
-
-    trades.forEach((trade, index) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td><input class="time" value="${trade.time}"></td>
-            <td><input class="pair" value="${trade.pair}"></td>
-            <td>
-                <select class="direction">
-                    <option ${trade.direction === "Buy" ? "selected" : ""}>Buy</option>
-                    <option ${trade.direction === "Sell" ? "selected" : ""}>Sell</option>
-                </select>
-            </td>
-            <td><input class="quantity" type="number" step="0.01" value="${trade.quantity}"></td>
-            <td><input class="entry" type="number" step="0.01" value="${trade.entry}"></td>
-            <td><input class="exit" type="number" step="0.01" value="${trade.exit}"></td>
-            <td><input class="pl" readonly value="${trade.pl}"></td>
-            <td>
-                <select class="emotion">
-                    <option ${trade.emotion === "Confidence" ? "selected" : ""}>Confidence</option>
-                    <option ${trade.emotion === "Normal" ? "selected" : ""}>Normal</option>
-                    <option ${trade.emotion === "Fear" ? "selected" : ""}>Fear</option>
-                    <option ${trade.emotion === "Greed" ? "selected" : ""}>Greed</option>
-                    <option ${trade.emotion === "FOMO" ? "selected" : ""}>FOMO</option>
-                    <option ${trade.emotion === "Revenge" ? "selected" : ""}>Revenge</option>
-                </select>
-            </td>
-            <td>
-                <select class="mistake-select">
-                    <option ${trade.mistake === "NONE" || trade.mistake === "1 NONE" ? "selected" : ""}>1 NONE</option>
-                    <option ${trade.mistake === "2 FOMO ENTRY" ? "selected" : ""}>2 FOMO ENTRY</option>
-                    <option ${trade.mistake === "3 FEAR EXIT" ? "selected" : ""}>3 FEAR EXIT</option>
-                    <option ${trade.mistake === "4 OVER TRADING" ? "selected" : ""}>4 OVER TRADING</option>
-                    <option ${trade.mistake === "5 STOPLOSS MOVE" ? "selected" : ""}>5 STOPLOSS MOVE</option>
-                    <option ${trade.mistake === "6 STUCK IN LOSS" ? "selected" : ""}>6 STUCK IN LOSS</option>
-                    <option ${trade.mistake === "7 NOT FOLLOW SETUP" ? "selected" : ""}>7 NOT FOLLOW SETUP</option>
-                    <option ${trade.mistake === "8 OPPOSITE TREND" ? "selected" : ""}>8 OPPOSITE TREND</option>
-                    <option ${trade.mistake === "9 MISS GOOD TRADE" ? "selected" : ""}>9 MISS GOOD TRADE</option>
-                    <option ${trade.mistake === "10 REVENGE TRADE" ? "selected" : ""}>10 REVENGE TRADE</option>
-                    <option ${trade.mistake === "11 HOPE YA GUESS" ? "selected" : ""}>11 HOPE YA GUESS</option>
-                </select>
-            </td>
-            <td>
-                <select class="rule">
-                    <option ${trade.rule === "Yes" ? "selected" : ""}>Yes</option>
-                    <option ${trade.rule === "Partial" ? "selected" : ""}>Partial</option>
-                    <option ${trade.rule === "No" ? "selected" : ""}>No</option>
-                </select>
-            </td>
-            <td><button class="delete-btn">Delete</button></td>
-        `;
-        tradeBody.appendChild(row);
-        attachTradeEvents(row, index);
-    });
-    loadSetup();
-}
 
 /*=========================================================
-ATTACH TRADE EVENTS
+DISCIPLINE CENTER
+PART-1
 =========================================================*/
-function attachTradeEvents(row, index) {
-    row.querySelectorAll("input").forEach(input => {
-        input.addEventListener("input", () => {
-            updateTrade(row, index);
+
+const disciplineCards =
+document.querySelectorAll(".discipline-card");
+
+const disciplineDetails =
+document.getElementById("disciplineDetails");
+
+const disciplineTitle =
+document.getElementById("disciplineTitle");
+
+const disciplineBadge =
+document.getElementById("disciplineBadge");
+
+const disciplineContent =
+document.getElementById("disciplineContent");
+
+const disciplineNote =
+document.getElementById("disciplineNote");
+
+const resetDiscipline =
+document.getElementById("resetDiscipline");
+
+const disciplineData = {
+
+    rules:{
+
+        badge:"TODAY'S RULES",
+
+        title:"📋 Today's Rules",
+
+        note:"Follow every rule before taking any trade.",
+
+        items:[
+
+            "Maximum 2 Trades OR ₹3000 Daily Loss",
+
+            "Risk : Reward = 1 : 3",
+
+            "No Revenge Trade",
+
+            "Trade Only A1+ & A1",
+
+            "30 Minute Gap After Losing Trade",
+
+            "No Mobile / TV / Sleep During Market Hours",
+
+            "Complete Journal Before End Of Day"
+
+        ]
+
+    },
+
+   score:{
+
+    badge:"DISCIPLINE SCORE",
+
+    title:"⭐ Discipline Score",
+
+    note:"Complete these 5 discipline rules before or after trading.",
+
+    rules:[
+
+        {
+            id:"setup",
+
+            title:"1️⃣ Setup Rule (सेटअप का नियम) — 20%",
+
+            question:
+            "क्या मैंने अपने ट्रेडिंग सेटअप या स्ट्रेटेजी के बनने का इंतजार किया?",
+
+            yes:
+            "जब आपकी स्ट्रेटेजी ने Buy या Sell का सिग्नल दिया, आपने तभी ट्रेड लिया।",
+
+            no:
+            "आपने बिना किसी ठोस वजह के, सिर्फ मार्केट को ऊपर-नीचे भागते देख (FOMO में) ट्रेड ले लिया।"
+        },
+
+
+        {
+            id:"risk",
+
+            title:"2️⃣ Risk Management Rule (रिस्क मैनेजमेंट) — 20%",
+
+            question:
+            "क्या मैंने अपनी तय की हुई क्वांटिटी (Position Sizing) के साथ ही ट्रेड किया?",
+
+            yes:
+            "आपने पहले से तय किया था कि इस ट्रेड में कितना रिस्क लेना है और उतनी ही क्वांटिटी ट्रेड की।",
+
+            no:
+            "लालच में आकर बहुत बड़ी क्वांटिटी ले ली जिससे बड़ा नुकसान हो सकता था।"
+        },
+
+
+        {
+            id:"stoploss",
+
+            title:"3️⃣ Stop-Loss Rule (स्टॉप-लॉस का नियम) — 20%",
+
+            question:
+            "क्या मैंने ट्रेड लेते ही सिस्टम में स्टॉप-लॉस लगाया और उसे बदला नहीं?",
+
+            yes:
+            "ट्रेड लेते ही SL लगाया और मार्केट विपरीत गया तो अपना लॉस स्वीकार किया।",
+
+            no:
+            "बिना SL ट्रेड किया या लॉस होने पर स्टॉप-लॉस को नीचे खिसकाया।"
+        },
+
+
+        {
+            id:"execution",
+
+            title:"4️⃣ Execution & Exit Rule (एग्जिट का नियम) — 20%",
+
+            question:
+            "क्या मैं अपने टारगेट या स्टॉप-लॉस आने तक ट्रेड में टिका रहा?",
+
+            yes:
+            "मार्केट को अपना काम करने दिया। या Target मिला या Stop-Loss।",
+
+            no:
+            "डर की वजह से जल्दी exit किया या बिना वजह trade बंद किया।"
+        },
+
+
+        {
+            id:"emotion",
+
+            title:"5️⃣ Emotion & Over-trading Rule (इमोशन कंट्रोल) — 20%",
+
+            question:
+            "क्या मैंने आज अपना डेली लिमिट पार नहीं किया?",
+
+            yes:
+            "लिमिट पूरी होने के बाद स्क्रीन बंद कर दी और revenge trade नहीं किया।",
+
+            no:
+            "लॉस रिकवर करने के चक्कर में Revenge Trading की और ज्यादा trades लिए।"
+        }
+
+    ]
+
+},
+
+
+
+    daily:{
+
+        badge:"DAILY TARGET",
+
+        title:"🎯 Daily Target",
+
+        note:"Track today's trading goal.",
+
+        items:[
+
+            "Daily Profit Target",
+
+            "Current Profit",
+
+            "Progress",
+
+            "Remaining Target"
+
+        ]
+
+    },
+
+    weekly:{
+
+        badge:"WEEKLY TARGET",
+
+        title:"📅 Weekly Target",
+
+        note:"Track your weekly goal.",
+
+        items:[
+
+            "Weekly Goal",
+
+            "Current Result",
+
+            "Progress",
+
+            "Remaining"
+
+        ]
+
+    },
+
+    monthly:{
+
+        badge:"MONTHLY TARGET",
+
+        title:"📈 Monthly Target",
+
+        note:"Track your monthly goal.",
+
+        items:[
+
+            "Monthly Goal",
+
+            "Current Result",
+
+            "Progress",
+
+            "Remaining"
+
+        ]
+
+    },
+
+    consistency:{
+
+        badge:"CONSISTENCY",
+
+        title:"🔥 Consistency Score",
+
+        note:"Maintain consistent discipline every trading day.",
+
+        items:[
+
+            "Current Streak",
+
+            "Last 30 Days",
+
+            "Average Discipline",
+
+            "Performance Level"
+
+        ]
+
+    }
+
+};
+
+let activeDisciplineView = "";
+
+/*=========================================================
+DISCIPLINE CENTER
+PART-2
+SHOW CATEGORY
+=========================================================*/
+
+function showDisciplineCategory(categoryName){
+
+    const categoryInfo = disciplineData[categoryName];
+
+    if(!categoryInfo) return;
+
+    activeDisciplineView = categoryName;
+
+    disciplineTitle.textContent = categoryInfo.title;
+    disciplineBadge.textContent = categoryInfo.badge;
+
+    disciplineContent.innerHTML = "";
+
+    const scoreBox =
+    document.getElementById("disciplineScoreResult");
+
+    scoreBox.style.display = "none";
+
+    if(categoryName==="score"){
+
+        disciplineNote.textContent="";
+
+        categoryInfo.rules.forEach((rule)=>{
+
+            const li=document.createElement("li");
+
+            li.style.listStyle="none";
+            li.style.marginBottom="25px";
+
+            li.innerHTML=`
+
+                <div style="font-size:20px;color:#f8fafc;margin-bottom:10px;">
+                    <b>${rule.title}</b>
+                </div>
+
+                <div style="font-size:16px;color:#cbd5e1;margin-bottom:10px;">
+                    ${rule.question}
+                </div>
+
+                <label style="display:block;margin-bottom:10px;cursor:pointer;">
+
+                    <input
+                    type="checkbox"
+                    class="discipline-score-check"
+                    data-rule="${rule.id}"
+                    data-value="yes"
+                    ${getSavedDisciplineValue(rule.id)==="yes" ? "checked" : ""}
+                    style="
+                    width:20px;
+                    height:20px;
+                    accent-color:#19d76b;
+                    cursor:pointer;
+                    ">
+
+                    ✅ YES (+20%)
+
+                    <div style="margin-left:28px;color:#94a3b8;">
+                        ${rule.yes}
+                    </div>
+
+                </label>
+
+                <label style="display:block;cursor:pointer;">
+
+                    <input
+                    type="checkbox"
+                    class="discipline-score-check"
+                    data-rule="${rule.id}"
+                    data-value="no"
+                    ${getSavedDisciplineValue(rule.id)==="no" ? "checked" : ""}
+                    style="
+                    width:20px;
+                    height:20px;
+                    accent-color:#ef4444;
+                    cursor:pointer;
+                    ">
+
+                    ❌ NO (0%)
+
+                    <div style="margin-left:28px;color:#94a3b8;">
+                        ${rule.no}
+                    </div>
+
+                </label>
+
+            `;
+
+            disciplineContent.appendChild(li);
+
+            const checks=
+            li.querySelectorAll(".discipline-score-check");
+
+            checks.forEach(check=>{
+
+                check.addEventListener("change",()=>{
+
+                    if(check.checked){
+
+                        checks.forEach(other=>{
+
+                            if(other!==check){
+
+                                other.checked=false;
+
+                            }
+
+                        });
+
+                    }
+
+                    updateDisciplineScoreDisplay();
+
+                    saveDisciplineChecks();
+
+                    saveDisciplineScore();
+
+                });
+
+            });
+
         });
+
+        disciplineDetails.classList.add("show");
+
+        disciplineCards.forEach(card=>{
+
+            card.classList.remove("active","hide");
+
+            if(card.dataset.card==="score"){
+
+                card.classList.add("active");
+
+            }
+            else{
+
+                card.classList.add("hide");
+
+            }
+
+        });
+
+        scoreBox.style.display="block";
+
+        updateDisciplineScoreDisplay();
+
+        return;
+
+    }
+
+        disciplineNote.textContent =
+    categoryInfo.note;
+
+    categoryInfo.items.forEach((item,index)=>{
+
+        const li =
+        document.createElement("li");
+
+        li.style.display="flex";
+        li.style.alignItems="center";
+        li.style.gap="15px";
+        li.style.marginBottom="15px";
+        li.style.listStyle="none";
+
+        li.innerHTML=`
+
+            <input
+                type="checkbox"
+                class="discipline-checkbox"
+                id="discipline-${index}"
+                style="
+                width:20px;
+                height:20px;
+                cursor:pointer;
+                accent-color:#19d76b;
+                ">
+
+            <span
+                style="
+                font-size:18px;
+                color:#f8fafc;
+                line-height:1.6;
+                ">
+
+                ${item}
+
+            </span>
+
+        `;
+
+        disciplineContent.appendChild(li);
+
     });
 
-   const deleteBtn = row.querySelector(".delete-btn");
+    disciplineDetails.classList.add("show");
 
-if (deleteBtn) {
+    disciplineCards.forEach(card=>{
 
-    deleteBtn.addEventListener("click", () => {
+        card.classList.remove("active","hide");
 
-        journal[currentDate].trades.splice(index, 1);
+        if(card.dataset.card===categoryName){
 
-        loadTrades();
+            card.classList.add("active");
 
-       saveDatabase();
-        
-        updateSummary();
+        }
+        else{
 
-        refreshDashboard();
+            card.classList.add("hide");
+
+        }
 
     });
-
-}
 
 }
 
 /*=========================================================
-UPDATE TRADE & CURRENT ROW STATUS
+DISCIPLINE CENTER
+PART-3
+CLICK EVENTS + RESET + LOAD
 =========================================================*/
-function updateTrade(row, index) {
-    const trades = journal[currentDate].trades;
-    const trade = trades[index];
 
-    trade.time = row.querySelector(".time").value;
-    trade.pair = row.querySelector(".pair").value;
-    trade.direction = row.querySelector(".direction").value;
-    trade.quantity = parseFloat(row.querySelector(".quantity").value) || 0;
-    trade.entry = parseFloat(row.querySelector(".entry").value) || 0;
-    trade.exit = parseFloat(row.querySelector(".exit").value) || 0;
-    trade.emotion = row.querySelector(".emotion").value;
-    trade.mistake = row.querySelector(".mistake-select").value; 
-    trade.rule = row.querySelector(".rule").value;
+disciplineCards.forEach(card=>{
 
-    calculateTrade(trade);
-    
-    row.querySelector(".pl").value = trade.pl;
+    card.addEventListener("click",()=>{
 
-    if (Number(trade.pl) > 0) {
-        row.querySelector(".pl").className = "pl profit";
-    } else if (Number(trade.pl) < 0) {
-        row.querySelector(".pl").className = "pl loss";
-    } else {
-        row.querySelector(".pl").className = "pl";
+        showDisciplineCategory(
+
+            card.dataset.card
+
+        );
+
+    });
+
+});
+
+/*=========================================================
+RESET DISCIPLINE
+=========================================================*/
+
+resetDiscipline.addEventListener("click",()=>{
+
+    disciplineDetails.classList.remove("show");
+
+    activeDisciplineView="";
+
+    disciplineCards.forEach(card=>{
+
+        card.classList.remove("active");
+
+        card.classList.remove("hide");
+
+    });
+
+});
+
+/*=========================================================
+LOAD DISCIPLINE
+=========================================================*/
+
+function loadDiscipline(){
+
+    disciplineDetails.classList.remove("show");
+
+    disciplineCards.forEach(card=>{
+
+        card.classList.remove("active");
+
+        card.classList.remove("hide");
+
+    });
+
+    if(activeDisciplineView){
+
+        showDisciplineCategory(
+
+            activeDisciplineView
+
+        );
+
     }
-    
-   saveDatabase();
-
-updateSummary();
-
-refreshDashboard();
 
 }
 
 /*=========================================================
-CALCULATE TRADE
+DISCIPLINE SCORE
+PART-3A
+CALCULATE SCORE
 =========================================================*/
-function calculateTrade(trade) {
-    let points = 0;
-    if (trade.direction === "Buy") {
-        points = trade.exit - trade.entry;
-    } else {
-        points = trade.entry - trade.exit;
-    }
-    trade.pl = (points * trade.quantity).toFixed(2);
+
+function calculateDisciplineScore(){
+
+
+    const checks =
+    document.querySelectorAll(".discipline-score-check");
+
+
+    let score = 0;
+
+    let completed = 0;
+
+    let pending = 0;
+
+
+    checks.forEach(check=>{
+
+
+        if(check.checked && check.dataset.value==="yes"){
+
+
+            score += 20;
+
+            completed++;
+
+
+        }
+
+
+        else if(check.checked && check.dataset.value==="no"){
+
+
+            completed++;
+
+
+        }
+
+
+    });
+
+
+
+    const totalRules = 5;
+
+
+    pending =
+    totalRules - completed;
+
+
+
+    return {
+
+        score:score,
+
+        completed:completed,
+
+        pending:pending
+
+    };
+
+
 }
+
+/*=========================================================
+DISCIPLINE SCORE
+PART-3B
+LIVE SCORE UPDATE
+=========================================================*/
+
+function updateDisciplineScoreDisplay(){
+
+
+    const result =
+    calculateDisciplineScore();
+
+
+    const scoreBox =
+    document.getElementById("disciplineScoreResult");
+
+
+    if(!scoreBox) return;
+
+if(activeDisciplineView !== "score"){
+
+    scoreBox.style.display = "none";
+
+    return;
+
+}
+
+scoreBox.style.display = "block";
+
+    let rating = "";
+
+
+    if(result.score >= 80){
+
+        rating = "🔥 Excellent Discipline";
+
+    }
+
+    else if(result.score >= 60){
+
+        rating = "👍 Good Discipline";
+
+    }
+
+    else if(result.score >= 40){
+
+        rating = "⚠️ Improve Discipline";
+
+    }
+
+    else{
+
+        rating = "❌ Need More Control";
+
+    }
+
+
+
+    scoreBox.innerHTML = `
+
+        <div style="
+        margin-top:25px;
+        padding:20px;
+        background:#111827;
+        border:2px solid #d4af37;
+        border-radius:15px;
+        ">
+
+        <h3>⭐ Today's Score</h3>
+
+        <p>
+        Score:
+        <b>${result.score}%</b>
+        </p>
+
+
+        <p>
+        Completed Rules:
+        <b>${result.completed}/5</b>
+        </p>
+
+
+        <p>
+        Pending Rules:
+        <b>${result.pending}</b>
+        </p>
+
+
+        <p>
+        Discipline Rating:
+        <b>${rating}</b>
+        </p>
+
+
+        </div>
+
+    `;
+
+
+}
+
+
+
+/*=========================================================
+CHECKBOX CHANGE EVENT
+=========================================================*/
+
+document.addEventListener("change",(e)=>{
+
+
+    if(e.target.classList.contains("discipline-score-check")){
+
+        saveDisciplineChecks();
+
+        updateDisciplineScoreDisplay();
+
+        saveDisciplineScore();
+
+
+    }
+
+
+});
+
+/*=========================================================
+DISCIPLINE SCORE
+PART-4B
+SAVE DATA
+=========================================================*/
+
+function saveDisciplineScore(){
+
+
+    const result =
+    calculateDisciplineScore();
+
+
+
+    let rating = "";
+
+
+    if(result.score >= 80){
+
+        rating = "Excellent Discipline";
+
+    }
+
+    else if(result.score >= 60){
+
+        rating = "Good Discipline";
+
+    }
+
+    else if(result.score >= 40){
+
+        rating = "Improve Discipline";
+
+    }
+
+    else{
+
+        rating = "Need More Control";
+
+    }
+
+
+
+    // Make sure today's journal exists
+
+    if(!journal[currentDate]){
+
+        journal[currentDate] = {};
+
+    }
+
+
+    if(!journal[currentDate].discipline){
+
+        journal[currentDate].discipline = {};
+
+    }
+
+
+
+    journal[currentDate].discipline = {
+
+        score: result.score,
+
+        completed: result.completed,
+
+        pending: result.pending,
+
+        rating: rating
+
+    };
+
+
+
+    saveDatabase();
+
+
+
+}
+
+/*=========================================================
+LOAD SAVED DISCIPLINE CHECK
+=========================================================*/
+
+function getSavedDisciplineValue(ruleId){
+
+
+    const saved =
+    journal[currentDate]?.disciplineChecks;
+
+
+    if(!saved) return "";
+
+
+    return saved[ruleId] || "";
+
+
+}
+
+/*=========================================================
+DISCIPLINE SCORE
+PART-4D
+SAVE CHECKBOX SELECTION
+=========================================================*/
+
+function saveDisciplineChecks(){
+
+
+    if(!journal[currentDate]){
+
+        journal[currentDate]={};
+
+    }
+
+
+    if(!journal[currentDate].disciplineChecks){
+
+        journal[currentDate].disciplineChecks={};
+
+    }
+
+
+    const checks =
+    document.querySelectorAll(".discipline-score-check");
+
+
+    checks.forEach(check=>{
+
+
+        if(check.checked){
+
+
+            journal[currentDate].disciplineChecks[check.dataset.rule]
+            =
+            check.dataset.value;
+
+
+        }
+
+
+    });
+
+
+    saveDatabase();
+
+
+}
+
+/*=========================================================
+
+END DISCIPLINE CENTER
+=========================================================*/
 
 /*=========================================================
 SAVE DATABASE
@@ -977,715 +1657,18 @@ document.getElementById("averageRR").value=
 
 averageRR;
 
-}/*=========================================================
-DISCIPLINE ADVANCED TRADER JOURNAL V2
-script.js
-Part 4
-CALENDAR SYSTEM
-=========================================================*/
-
-/*=========================================================
-CALENDAR
-=========================================================*/
-
-const calendar=document.getElementById("calendar");
-
-const calendarMonth=document.getElementById("calendarMonth");
-
-const calendarYear=document.getElementById("calendarYear");
-
-const prevMonth=document.getElementById("prevMonth");
-
-const nextMonth=document.getElementById("nextMonth");
-
-/*=========================================================
-MONTHS
-=========================================================*/
-
-const months=[
-
-"January",
-
-"February",
-
-"March",
-
-"April",
-
-"May",
-
-"June",
-
-"July",
-
-"August",
-
-"September",
-
-"October",
-
-"November",
-
-"December"
-
-];
-
-/*=========================================================
-YEAR LIST
-=========================================================*/
-
-for(let y=2024;y<=2055;y++){
-
-const option=document.createElement("option");
-
-option.value=y;
-
-option.textContent=y;
-
-calendarYear.appendChild(option);
-
 }
 
-/*=========================================================
-MONTH LIST
-=========================================================*/
 
-months.forEach((month,index)=>{
 
-const option=document.createElement("option");
-
-option.value=index;
-
-option.textContent=month;
-
-calendarMonth.appendChild(option);
-
-});
-
-calendarMonth.value=today.getMonth();
-
-calendarYear.value=today.getFullYear();
-
-/*=========================================================
-BUILD CALENDAR
-=========================================================*/
-
-function buildCalendar(){
-
-calendar.innerHTML="";
-
-/* Week Header */
-
-const week=[
-
-"Sun",
-
-"Mon",
-
-"Tue",
-
-"Wed",
-
-"Thu",
-
-"Fri",
-
-"Sat"
-
-];
-
-week.forEach(day=>{
-
-const head=document.createElement("div");
-
-head.className="calendar-head";
-
-head.textContent=day;
-
-calendar.appendChild(head);
-
-});
-
-const month=
-
-Number(calendarMonth.value);
-
-const year=
-
-Number(calendarYear.value);
-
-const firstDay=
-
-new Date(year,month,1).getDay();
-
-const totalDays=
-
-new Date(year,month+1,0).getDate();
-
-/* Empty */
-
-for(let i=0;i<firstDay;i++){
-
-const empty=document.createElement("div");
-
-empty.className="calendar-empty";
-
-calendar.appendChild(empty);
-
-}
-
-/* Days */
-
-for(let day=1;day<=totalDays;day++){
-
-const box=document.createElement("div");
-
-box.className="calendar-day";
-
-const date=
-
-`${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-
-box.dataset.date=date;
-
-box.innerHTML=`<span>${day}</span>`;
-
-/*=========================================================
-COLOR
-=========================================================*/
-
-if(journal[date]){
-
-let total=0;
-
-journal[date].trades.forEach(trade=>{
-
-total+=Number(trade.pl)||0;
-
-});
-
-if(total>0){
-
-box.classList.add("calendar-profit");
-
-}
-
-else if(total<0){
-
-box.classList.add("calendar-loss");
-
-}
-
-}
-
-/*=========================================================
-TODAY
-=========================================================*/
-
-if(date===currentDate){
-
-box.style.outline="3px solid gold";
-
-}
-
-/*=========================================================
-CLICK
-=========================================================*/
-
-box.addEventListener("click",()=>{
-
-journalDate.value=date;
-
-loadDay(date);
-
-document.getElementById(
-
-"selectedDateText"
-
-).textContent=
-
-"Selected : "+date;
-
-});
-
-calendar.appendChild(box);
-
-}
-
-}
-
-/*=========================================================
-PREVIOUS
-=========================================================*/
-
-prevMonth.addEventListener("click",()=>{
-
-let month=
-
-Number(calendarMonth.value);
-
-let year=
-
-Number(calendarYear.value);
-
-month--;
-
-if(month<0){
-
-month=11;
-
-year--;
-
-}
-
-calendarMonth.value=month;
-
-calendarYear.value=year;
-
-buildCalendar();
-
-});
-
-/*=========================================================
-NEXT
-=========================================================*/
-
-nextMonth.addEventListener("click",()=>{
-
-let month=
-
-Number(calendarMonth.value);
-
-let year=
-
-Number(calendarYear.value);
-
-month++;
-
-if(month>11){
-
-month=0;
-
-year++;
-
-}
-
-calendarMonth.value=month;
-
-calendarYear.value=year;
-
-buildCalendar();
-
-});
-
-/*=========================================================
-CHANGE
-=========================================================*/
-
-calendarMonth.addEventListener(
-
-"change",
-
-buildCalendar
-
-);
-
-calendarYear.addEventListener(
-
-"change",
-
-buildCalendar
-
-);
-
-/*=========================================================
-FIRST LOAD
-=========================================================*/
-
-buildCalendar();/*=========================================================
+;/*=========================================================
 DISCIPLINE ADVANCED TRADER JOURNAL V2
 script.js
 Part 5 (FINAL)
 =========================================================*/
 
-/*=========================================================
-NOTES
-=========================================================*/
 
-function loadNotes(){
 
-const notes=journal[currentDate].notes;
-
-document.getElementById("todayPlan").value=notes.todayPlan;
-
-document.getElementById("tradeReview").value=notes.tradeReview;
-
-document.getElementById("mistakes").value=notes.mistakes;
-
-document.getElementById("lessons").value=notes.lessons;
-
-document.getElementById("tomorrowPlan").value=notes.tomorrowPlan;
-
-}
-
-[
-"todayPlan",
-"tradeReview",
-"mistakes",
-"lessons",
-"tomorrowPlan"
-
-].forEach(id=>{
-
-const el=document.getElementById(id);
-
-el.addEventListener("input",()=>{
-
-journal[currentDate].notes[id]=el.value;
-
-saveDatabase();
-
-});
-
-});
-
-/*=========================================================
-PSYCHOLOGY
-=========================================================*/
-
-function loadPsychology(){
-
-const p=journal[currentDate].psychology;
-
-document.getElementById("fear").checked=p.fear;
-
-document.getElementById("greed").checked=p.greed;
-
-document.getElementById("fomo").checked=p.fomo;
-
-document.getElementById("revenge").checked=p.revenge;
-
-document.getElementById("overTrading").checked=p.overTrading;
-
-document.getElementById("patience").checked=p.patience;
-
-document.getElementById("followPlan").checked=p.followPlan;
-
-document.getElementById("noEmotion").checked=p.noEmotion;
-
-}
-
-[
-"fear",
-"greed",
-"fomo",
-"revenge",
-"overTrading",
-"patience",
-"followPlan",
-"noEmotion"
-
-].forEach(id=>{
-
-document.getElementById(id)
-
-.addEventListener("change",()=>{
-
-journal[currentDate].psychology[id]=
-
-document.getElementById(id).checked;
-
-saveDatabase();
-
-});
-
-});
-
-/*=========================================================
-SCREENSHOTS
-=========================================================*/
-
-async function uploadImage(file){
-
-    const formData = new FormData();
-
-    formData.append("image", file);
-
-    const res = await fetch("/api/upload-image",{
-        method:"POST",
-        body:formData
-    });
-
-    const data = await res.json();
-
-    if(!data.success){
-        throw new Error(data.error);
-    }
-
-    return data.url;
-
-}
-
-function imageUpload(inputId,key,imageId){
-
-const input=document.getElementById(inputId);
-
-const img=document.getElementById(imageId);
-
-const zone=input.closest(".drop-zone");
-
-const removeBtn=zone.querySelector(".remove-image");
-
-/* ---------- SAVE IMAGE ---------- */
-
-function saveImage(file){
-
-    if(!file) return;
-
-   (async()=>{
-
-    try{
-
-        const imageUrl = await uploadImage(file);
-
-        journal[currentDate].screenshots[key] = imageUrl;
-
-        img.src = imageUrl;
-
-        img.style.display = "block";
-
-        img.style.pointerEvents = "auto";
-
-        await saveDatabase();
-
-    }catch(err){
-
-        alert("Image upload failed!");
-
-        console.error(err);
-
-    }
-
-})();
-
-}
-
-/* ---------- CHOOSE FILE ---------- */
-
-input.addEventListener("change",()=>{
-
-    if(input.files.length){
-
-        saveImage(input.files[0]);
-
-    }
-
-});
-
-/* ---------- CLICK EMPTY BOX ---------- */
-
-zone.addEventListener("click",(e)=>{
-
-    if(
-        e.target===img ||
-        e.target===removeBtn
-    ){
-        return;
-    }
-
-    input.click();
-
-});
-
-/* ---------- IMAGE FULL SCREEN ---------- */
-
-img.addEventListener("click",(e)=>{
-
-    e.preventDefault();
-
-    e.stopPropagation();
-
-    const image=journal[currentDate].screenshots[key];
-
-    if(!image) return;
-
-    const win=window.open();
-
-    win.document.write(`
-    <html>
-    <head>
-    <title>Chart</title>
-    <style>
-    body{
-    margin:0;
-    background:#000;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    }
-    img{
-    max-width:100%;
-    max-height:100%;
-    object-fit:contain;
-    }
-    </style>
-    </head>
-    <body>
-    <img src="${image}">
-    </body>
-    </html>
-    `);
-
-});
-
-/* ---------- DRAG ---------- */
-
-zone.addEventListener("dragover",(e)=>{
-
-    e.preventDefault();
-
-    zone.classList.add("drag-over");
-
-});
-
-zone.addEventListener("dragleave",()=>{
-
-    zone.classList.remove("drag-over");
-
-});
-
-zone.addEventListener("drop",(e)=>{
-
-    e.preventDefault();
-
-    zone.classList.remove("drag-over");
-
-    const file=e.dataTransfer.files[0];
-
-    if(file && file.type.startsWith("image/")){
-
-        saveImage(file);
-
-    }
-
-});
-
-/* ---------- CTRL + V ---------- */
-
-zone.setAttribute("tabindex","0");
-
-zone.addEventListener("paste",(e)=>{
-
-    const items=e.clipboardData.items;
-
-    for(const item of items){
-
-        if(item.type.startsWith("image/")){
-
-            saveImage(item.getAsFile());
-
-            e.preventDefault();
-
-            return;
-
-        }
-
-    }
-
-});
-
-/* ---------- DELETE ---------- */
-
-removeBtn.addEventListener("click", async (e)=>{
-
-    e.stopPropagation();
-
-    try{
-
-        const imageUrl = journal[currentDate].screenshots[key];
-
-        if(imageUrl){
-
-            await fetch("/api/delete-image",{
-
-                method:"POST",
-
-                headers:{
-                    "Content-Type":"application/json"
-                },
-
-                body:JSON.stringify({
-                    imageUrl
-                })
-
-            });
-
-        }
-
-        journal[currentDate].screenshots[key]="";
-
-        img.src="";
-
-        img.style.display="none";
-
-        img.style.pointerEvents="none";
-
-        input.value="";
-
-        await saveDatabase();
-
-    }catch(err){
-
-        console.error(err);
-
-        alert("Image delete failed!");
-
-    }
-
-});
-
-} // imageUpload End
-
-/* ---------- LOAD SCREENSHOTS ---------- */
-
-function loadScreenshots(){
-
-const map=[
-["before","beforePreview"],
-["after","afterPreview"],
-["mistake","mistakePreview"]
-];
-
-map.forEach(([key,id])=>{
-
-    const img=document.getElementById(id);
-
-    const data=journal[currentDate].screenshots[key];
-
-    if(data){
-
-        img.src=data;
-        img.style.display="block";
-        img.style.pointerEvents="auto";
-
-    }else{
-
-        img.src="";
-        img.style.display="none";
-        img.style.pointerEvents="none";
-
-    }
-
-});
-
-}
-
-/* ---------- INIT ---------- */
-
-imageUpload("beforeChart","before","beforePreview");
-imageUpload("afterChart","after","afterPreview");
-imageUpload("mistakeChart","mistake","mistakePreview");
 
 
 
@@ -2478,1154 +2461,6 @@ function refreshDashboard(){
 }
 
 /*=========================================================
-DASHBOARD REPORTS
-PART-7
-MONTHLY REPORT CALCULATION
-=========================================================*/
-
-function calculateMonthlyReport(){
-
-    if(!reportMonth) return;
-
-    monthlyReport.trades = 0;
-    monthlyReport.wins = 0;
-    monthlyReport.losses = 0;
-
-    monthlyReport.totalProfit = 0;
-    monthlyReport.totalLoss = 0;
-
-    monthlyReport.netPL = 0;
-    monthlyReport.winRate = 0;
-
-    monthlyReport.bestDay = "--";
-    monthlyReport.worstDay = "--";
-
-    const month =
-    Number(reportMonth.value);
-
-    let bestPL = -Infinity;
-    let worstPL = Infinity;
-
-    for(const date in journal){
-
-        if(!journal[date]) continue;
-
-        const d = new Date(date);
-
-        if(isNaN(d)) continue;
-
-        if(d.getMonth()!=month) continue;
-
-        let dayPL = 0;
-
-        if(!journal[date].trades) continue;
-
-        journal[date].trades.forEach(trade=>{
-
-            const pl = Number(trade.pl)||0;
-
-            monthlyReport.trades++;
-
-            dayPL += pl;
-
-            if(pl>0){
-
-                monthlyReport.wins++;
-
-                monthlyReport.totalProfit += pl;
-
-            }
-
-            else if(pl<0){
-
-                monthlyReport.losses++;
-
-                monthlyReport.totalLoss +=
-                Math.abs(pl);
-
-            }
-
-        });
-
-        if(dayPL>bestPL){
-
-            bestPL = dayPL;
-
-            monthlyReport.bestDay = date;
-
-        }
-
-        if(dayPL<worstPL){
-
-            worstPL = dayPL;
-
-            monthlyReport.worstDay = date;
-
-        }
-
-    }
-
-    monthlyReport.netPL =
-    monthlyReport.totalProfit -
-    monthlyReport.totalLoss;
-
-    monthlyReport.winRate =
-
-    monthlyReport.trades===0
-
-    ?0
-
-    :
-
-    (
-
-    monthlyReport.wins/
-
-    monthlyReport.trades
-
-    )*100;
-
-}
-
-/*=========================================================
-UPDATE MONTHLY UI
-=========================================================*/
-
-function updateMonthlyReportUI(){
-
-    if(monthTrades)
-        monthTrades.textContent =
-        monthlyReport.trades;
-
-    if(monthWins)
-        monthWins.textContent =
-        monthlyReport.wins;
-
-    if(monthLosses)
-        monthLosses.textContent =
-        monthlyReport.losses;
-
-    if(monthWinRate)
-        monthWinRate.textContent =
-        monthlyReport.winRate.toFixed(1)+"%";
-
-    if(monthProfit)
-        monthProfit.textContent =
-        monthlyReport.totalProfit.toFixed(2);
-
-    if(monthLoss)
-        monthLoss.textContent =
-        monthlyReport.totalLoss.toFixed(2);
-
-    if(monthNet)
-        monthNet.textContent =
-        monthlyReport.netPL.toFixed(2);
-
-    if(bestDay)
-        bestDay.textContent =
-        monthlyReport.bestDay;
-
-    if(worstDay)
-        worstDay.textContent =
-        monthlyReport.worstDay;
-
-}
-
-/*=========================================================
-MONTH CHANGE
-=========================================================*/
-
-if(reportMonth){
-
-    reportMonth.addEventListener(
-
-        "change",
-
-        updateDashboard
-
-    );
-
-}
-
-/*=========================================================
-DASHBOARD REPORTS
-PART-8
-TRADING SCORE
-=========================================================*/
-
-function calculateTradingScore(){
-
-    dashboard.score = 0;
-
-    /*=========================
-    WIN RATE
-    =========================*/
-
-    dashboard.score +=
-
-    Math.min(
-
-        dashboard.winRate,
-
-        40
-
-    );
-
-    /*=========================
-    PROFIT FACTOR
-    =========================*/
-
-    dashboard.score +=
-
-    Math.min(
-
-        dashboard.profitFactor*10,
-
-        30
-
-    );
-
-    /*=========================
-    CONSISTENCY
-    =========================*/
-
-    dashboard.score +=
-
-    Math.min(
-
-        dashboard.totalTrades,
-
-        30
-
-    );
-
-    dashboard.score =
-
-    Math.round(
-
-        dashboard.score
-
-    );
-
-}
-
-/*=========================================================
-UPDATE SCORE UI
-=========================================================*/
-
-function updateTradingScoreUI(){
-
-    const scoreValue =
-
-    document.getElementById(
-
-        "tradingScore"
-
-    );
-
-    const scoreLevel =
-
-    document.getElementById(
-
-        "scoreLevel"
-
-    );
-
-    const scoreStars =
-
-    document.getElementById(
-
-        "scoreStars"
-
-    );
-
-    if(scoreValue){
-
-        scoreValue.textContent =
-
-        dashboard.score;
-
-    }
-
-    if(!scoreLevel) return;
-
-    if(dashboard.score>=90){
-
-        scoreLevel.textContent =
-
-        "MASTER";
-
-        scoreLevel.className =
-
-        "score-master";
-
-        if(scoreStars)
-
-        scoreStars.textContent =
-
-        "★★★★★";
-
-    }
-
-    else if(dashboard.score>=75){
-
-        scoreLevel.textContent =
-
-        "ADVANCED";
-
-        scoreLevel.className =
-
-        "score-advanced";
-
-        if(scoreStars)
-
-        scoreStars.textContent =
-
-        "★★★★☆";
-
-    }
-
-    else if(dashboard.score>=55){
-
-        scoreLevel.textContent =
-
-        "INTERMEDIATE";
-
-        scoreLevel.className =
-
-        "score-intermediate";
-
-        if(scoreStars)
-
-        scoreStars.textContent =
-
-        "★★★☆☆";
-
-    }
-
-    else{
-
-        scoreLevel.textContent =
-
-        "BEGINNER";
-
-        scoreLevel.className =
-
-        "score-beginner";
-
-        if(scoreStars)
-
-        scoreStars.textContent =
-
-        "★★☆☆☆";
-
-    }
-
-}
-
-/*=========================================================
-DASHBOARD REPORTS
-PART-9
-SETUP ANALYTICS
-=========================================================*/
-
-function calculateSetupAnalytics(){
-
-    /*=========================
-    RESET
-    =========================*/
-
-    ["A1","A2","B1","B2"].forEach(setup=>{
-
-        setupReport[setup].trades = 0;
-        setupReport[setup].wins = 0;
-        setupReport[setup].losses = 0;
-        setupReport[setup].pl = 0;
-
-    });
-
-    /*=========================
-    LOOP JOURNAL
-    =========================*/
-
-    for(const date in journal){
-
-        if(!journal[date]) continue;
-
-        if(!journal[date].trades) continue;
-
-        journal[date].trades.forEach(trade=>{
-
-            const setup =
-
-            (trade.setup || "").trim();
-
-            if(
-
-                !setupReport.hasOwnProperty(setup)
-
-            ) return;
-
-            const pl = Number(trade.pl)||0;
-
-            setupReport[setup].trades++;
-
-            setupReport[setup].pl += pl;
-
-            if(pl>0){
-
-                setupReport[setup].wins++;
-
-            }
-
-            else if(pl<0){
-
-                setupReport[setup].losses++;
-
-            }
-
-        });
-
-    }
-
-}
-
-/*=========================================================
-UPDATE SETUP UI
-=========================================================*/
-
-function updateSetupAnalyticsUI(){
-
-    updateOneSetup(
-
-        "A1",
-
-        setupA1Wins,
-
-        setupA1Losses,
-
-        setupA1PL,
-
-        setupA1Rate
-
-    );
-
-    updateOneSetup(
-
-        "A2",
-
-        setupA2Wins,
-
-        setupA2Losses,
-
-        setupA2PL,
-
-        setupA2Rate
-
-    );
-
-    updateOneSetup(
-
-        "B1",
-
-        setupB1Wins,
-
-        setupB1Losses,
-
-        setupB1PL,
-
-        setupB1Rate
-
-    );
-
-    updateOneSetup(
-
-        "B2",
-
-        setupB2Wins,
-
-        setupB2Losses,
-
-        setupB2PL,
-
-        setupB2Rate
-
-    );
-
-}
-
-/*=========================================================
-HELPER
-=========================================================*/
-
-function updateOneSetup(
-
-setup,
-
-winsEl,
-
-lossEl,
-
-plEl,
-
-rateEl
-
-){
-
-    const data =
-
-    setupReport[setup];
-
-    const rate =
-
-    data.trades===0
-
-    ?0
-
-    :
-
-    (
-
-        data.wins/
-
-        data.trades
-
-    )*100;
-
-    if(winsEl)
-
-        winsEl.textContent =
-
-        data.wins;
-
-    if(lossEl)
-
-        lossEl.textContent =
-
-        data.losses;
-
-    if(plEl)
-
-        plEl.textContent =
-
-        data.pl.toFixed(2);
-
-    if(rateEl)
-
-        rateEl.textContent =
-
-        rate.toFixed(1)+"%";
-
-}
-
-
-/*=========================================================
-DASHBOARD REPORTS
-PART-10A
-CHART HELPERS + EQUITY CURVE
-=========================================================*/
-
-function destroyDashboardCharts(){
-
-    if(equityChart){
-
-        equityChart.destroy();
-        equityChart = null;
-
-    }
-
-    if(monthlyChart){
-
-        monthlyChart.destroy();
-        monthlyChart = null;
-
-    }
-
-    if(winLossChart){
-
-        winLossChart.destroy();
-        winLossChart = null;
-
-    }
-
-    if(setupChart){
-
-        setupChart.destroy();
-        setupChart = null;
-
-    }
-
-}
-
-/*=========================================================
-COLORS
-=========================================================*/
-
-const dashboardChartColors={
-
-    green:"#19d76b",
-
-    red:"#ff4b5c",
-
-    blue:"#3d8bfd",
-
-    gold:"#d4af37",
-
-    white:"#ffffff",
-
-    grid:"rgba(255,255,255,.08)"
-
-};
-
-/*=========================================================
-EQUITY DATA
-=========================================================*/
-
-function getEquityData(){
-
-    const labels=[];
-
-    const values=[];
-
-    let balance=0;
-
-    const dates=
-
-    Object.keys(journal).sort();
-
-    dates.forEach(date=>{
-
-        if(!journal[date]) return;
-
-        if(!journal[date].trades) return;
-
-        let dayPL=0;
-
-        journal[date].trades.forEach(trade=>{
-
-            dayPL+=Number(trade.pl)||0;
-
-        });
-
-        balance+=dayPL;
-
-        labels.push(date);
-
-        values.push(balance);
-
-    });
-
-    return{
-
-        labels,
-
-        values
-
-    };
-
-}
-
-/*=========================================================
-EQUITY CHART
-=========================================================*/
-
-function drawEquityChart(){
-
-    const canvas=
-
-    document.getElementById(
-
-        "equityChart"
-
-    );
-
-    if(!canvas) return;
-
-    const data=
-
-    getEquityData();
-
-    if(equityChart){
-
-        equityChart.destroy();
-
-    }
-
-    equityChart=
-
-    new Chart(
-
-        canvas,
-
-        {
-
-            type:"line",
-
-            data:{
-
-                labels:data.labels,
-
-                datasets:[{
-
-                    label:"Equity",
-
-                    data:data.values,
-
-                    borderColor:
-
-                    dashboardChartColors.green,
-
-                    backgroundColor:
-
-                    "rgba(25,215,107,.15)",
-
-                    borderWidth:3,
-
-                    tension:.35,
-
-                    fill:true,
-
-                    pointRadius:4,
-
-                    pointHoverRadius:6
-
-                }]
-
-            },
-
-            options:{
-
-                responsive:true,
-
-                maintainAspectRatio:false,
-
-                plugins:{
-
-                    legend:{
-
-                        labels:{
-
-                            color:"#fff"
-
-                        }
-
-                    }
-
-                },
-
-                scales:{
-
-                    x:{
-
-                        ticks:{
-
-                            color:"#fff"
-
-                        },
-
-                        grid:{
-
-                            color:
-
-                            dashboardChartColors.grid
-
-                        }
-
-                    },
-
-                    y:{
-
-                        ticks:{
-
-                            color:"#fff"
-
-                        },
-
-                        grid:{
-
-                            color:
-
-                            dashboardChartColors.grid
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-    );
-
-}
-
-/*=========================================================
-DASHBOARD REPORTS
-PART-10B
-MONTHLY BAR + WIN LOSS PIE
-=========================================================*/
-
-function getMonthlyPLData(){
-
-    const months=[
-        "Jan","Feb","Mar","Apr","May","Jun",
-        "Jul","Aug","Sep","Oct","Nov","Dec"
-    ];
-
-    const values=new Array(12).fill(0);
-
-    Object.keys(journal).forEach(date=>{
-
-        if(!journal[date]) return;
-        if(!journal[date].trades) return;
-
-        const d=new Date(date);
-
-        if(isNaN(d)) return;
-
-        let total=0;
-
-        journal[date].trades.forEach(trade=>{
-
-            total+=Number(trade.pl)||0;
-
-        });
-
-        values[d.getMonth()]+=total;
-
-    });
-
-    return{
-
-        labels:months,
-
-        values:values
-
-    };
-
-}
-
-/*=========================================================
-MONTHLY BAR CHART
-=========================================================*/
-
-function drawMonthlyChart(){
-
-    const canvas=
-    document.getElementById("monthlyChart");
-
-    if(!canvas) return;
-
-    const data=
-    getMonthlyPLData();
-
-    if(monthlyChart){
-
-        monthlyChart.destroy();
-
-    }
-
-    monthlyChart=new Chart(canvas,{
-
-        type:"bar",
-
-        data:{
-
-            labels:data.labels,
-
-            datasets:[{
-
-                label:"Monthly P/L",
-
-                data:data.values,
-
-                backgroundColor:
-                dashboardChartColors.gold,
-
-                borderRadius:8
-
-            }]
-
-        },
-
-        options:{
-
-            responsive:true,
-
-            maintainAspectRatio:false,
-
-            plugins:{
-
-                legend:{
-
-                    labels:{
-
-                        color:"#fff"
-
-                    }
-
-                }
-
-            },
-
-            scales:{
-
-                x:{
-
-                    ticks:{
-
-                        color:"#fff"
-
-                    },
-
-                    grid:{
-
-                        color:
-                        dashboardChartColors.grid
-
-                    }
-
-                },
-
-                y:{
-
-                    ticks:{
-
-                        color:"#fff"
-
-                    },
-
-                    grid:{
-
-                        color:
-                        dashboardChartColors.grid
-
-                    }
-
-                }
-
-            }
-
-        }
-
-    });
-
-}
-
-/*=========================================================
-WIN LOSS PIE
-=========================================================*/
-
-function drawWinLossChart(){
-
-    const canvas=
-    document.getElementById("winLossChart");
-
-    if(!canvas) return;
-
-    if(winLossChart){
-
-        winLossChart.destroy();
-
-    }
-
-    winLossChart=new Chart(canvas,{
-
-        type:"pie",
-
-        data:{
-
-            labels:[
-
-                "Winning Trades",
-
-                "Losing Trades"
-
-            ],
-
-            datasets:[{
-
-                data:[
-
-                    dashboard.winningTrades,
-
-                    dashboard.losingTrades
-
-                ],
-
-                backgroundColor:[
-
-                    dashboardChartColors.green,
-
-                    dashboardChartColors.red
-
-                ],
-
-                borderWidth:0
-
-            }]
-
-        },
-
-        options:{
-
-            responsive:true,
-
-            maintainAspectRatio:false,
-
-            plugins:{
-
-                legend:{
-
-                    position:"bottom",
-
-                    labels:{
-
-                        color:"#fff"
-
-                    }
-
-                }
-
-            }
-
-        }
-
-    });
-
-}
-
-/*=========================================================
-DASHBOARD REPORTS
-PART-10C
-SETUP CHART + UPDATE ALL CHARTS
-=========================================================*/
-
-function drawSetupChart(){
-
-    const canvas =
-    document.getElementById("setupChart");
-
-    if(!canvas) return;
-
-    if(setupChart){
-
-        setupChart.destroy();
-
-    }
-
-    setupChart = new Chart(canvas,{
-
-        type:"bar",
-
-        data:{
-
-            labels:[
-                "A1",
-                "A2",
-                "B1",
-                "B2"
-            ],
-
-            datasets:[{
-
-                label:"Setup P/L",
-
-                data:[
-
-                    setupReport.A1.pl,
-
-                    setupReport.A2.pl,
-
-                    setupReport.B1.pl,
-
-                    setupReport.B2.pl
-
-                ],
-
-                backgroundColor:[
-
-                    "#22c55e",
-
-                    "#3b82f6",
-
-                    "#f59e0b",
-
-                    "#ef4444"
-
-                ],
-
-                borderRadius:10
-
-            }]
-
-        },
-
-        options:{
-
-            responsive:true,
-
-            maintainAspectRatio:false,
-
-            plugins:{
-
-                legend:{
-
-                    labels:{
-
-                        color:"#ffffff"
-
-                    }
-
-                }
-
-            },
-
-            scales:{
-
-                x:{
-
-                    ticks:{
-
-                        color:"#ffffff"
-
-                    },
-
-                    grid:{
-
-                        color:"rgba(255,255,255,.08)"
-
-                    }
-
-                },
-
-                y:{
-
-                    ticks:{
-
-                        color:"#ffffff"
-
-                    },
-
-                    grid:{
-
-                        color:"rgba(255,255,255,.08)"
-
-                    }
-
-                }
-
-            }
-
-        }
-
-    });
-
-}
-
-/*=========================================================
 UPDATE ALL CHARTS
 =========================================================*/
 
@@ -3686,133 +2521,3 @@ document.querySelectorAll(".setup-card").forEach(card => {
 document.getElementById("resetSetup").addEventListener("click", () => {
     document.getElementById("setupDetails").style.display = "none";
 });
-
-/*=========================================================
-PART 19A
-SEARCH & CLEAR BUTTON
-V3.0
-=========================================================*/
-
-// Search Button
-document.getElementById("searchTradeBtn")
-.addEventListener("click", () => {
-
-    // Existing realtime search ko trigger karega
-    document.getElementById("searchTrade")
-    .dispatchEvent(new Event("input"));
-
-});
-
-// Clear Button
-document.getElementById("clearTradeBtn")
-.addEventListener("click", () => {
-
-   console.log("Clear Button Clicked"); 
-
-    document.getElementById("searchTrade").value = "";
-
-    document.getElementById("filterDirection").value = "All";
-
-    document.getElementById("filterResult").value = "All";
-
-    document.getElementById("filterSetup").value = "All";
-
-    // Realtime search ko dobara trigger karo
-    document.getElementById("searchTrade")
-    .dispatchEvent(new Event("input"));
-
-});
-
-/*=========================================================
-END PART 19A
-=========================================================*/
-
-/*=========================================================
-PART 19B
-TRADE FILTER ENGINE
-V3.0
-=========================================================*/
-
-function applyTradeFilters(){
-
-    const search=document.getElementById("searchTrade").value.toLowerCase().trim();
-
-    const direction=document.getElementById("filterDirection").value;
-
-    const result=document.getElementById("filterResult").value;
-
-    const setup=document.getElementById("filterSetup").value;
-
-    let filtered=journal[currentDate].trades.filter(trade=>{
-
-        const pairMatch=
-            trade.pair.toLowerCase().includes(search);
-
-        const directionMatch=
-            direction==="All" || trade.direction===direction;
-
-        const resultMatch=
-            result==="All" ||
-            (result==="Profit" && Number(trade.pl)>0) ||
-            (result==="Loss" && Number(trade.pl)<0);
-
-        const setupMatch=
-            setup==="All" ||
-            trade.setup===setup;
-
-        return pairMatch &&
-               directionMatch &&
-               resultMatch &&
-               setupMatch;
-
-    });
-
-    loadTrades(filtered);
-
-}
-
-/* Search */
-
-document.getElementById("searchTrade")
-.addEventListener("input",applyTradeFilters);
-
-/* Direction */
-
-document.getElementById("filterDirection")
-.addEventListener("change",applyTradeFilters);
-
-/* Result */
-
-document.getElementById("filterResult")
-.addEventListener("change",applyTradeFilters);
-
-/* Setup */
-
-document.getElementById("filterSetup")
-.addEventListener("change",applyTradeFilters);
-
-/* Search Button */
-
-document.getElementById("searchTradeBtn")
-.addEventListener("click",applyTradeFilters);
-
-/* Clear Button */
-
-document.getElementById("clearTradeBtn")
-.addEventListener("click",()=>{
-
-    document.getElementById("searchTrade").value="";
-
-    document.getElementById("filterDirection").value="All";
-
-    document.getElementById("filterResult").value="All";
-
-    document.getElementById("filterSetup").value="All";
-
-    loadTrades();
-
-});
-
-/*=========================================================
-END PART 19B
-=========================================================*/
