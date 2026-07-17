@@ -2874,3 +2874,22 @@ FINAL LOAD
 
 })();
 
+/*=========================================================
+JOURNAL MODULES
+=========================================================*/
+
+document.querySelectorAll(".journal-module").forEach(card=>{
+
+    card.addEventListener("click",()=>{
+
+        const target = document.getElementById(card.dataset.module);
+
+        if(!target) return;
+
+        card.classList.toggle("active");
+
+        target.classList.toggle("show");
+
+    });
+
+});

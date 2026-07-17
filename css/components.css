@@ -1924,3 +1924,189 @@ font-size:15px;
 }
 
 }
+
+/*=========================================================
+JOURNAL MODULE CARDS
+=========================================================*/
+
+.journal-modules{
+
+display:grid;
+
+grid-template-columns:repeat(5,1fr);
+
+gap:18px;
+
+margin:25px 0;
+
+}
+
+.journal-module{
+
+background:#171717;
+
+border:1px solid #2d2d2d;
+
+border-radius:18px;
+
+padding:20px;
+
+text-align:center;
+
+cursor:pointer;
+
+transition:.30s;
+
+box-shadow:0 8px 20px rgba(0,0,0,.25);
+
+}
+
+.journal-module:hover{
+
+transform:translateY(-5px);
+
+border-color:#d4af37;
+
+box-shadow:0 12px 30px rgba(0,0,0,.35);
+
+}
+
+.journal-module span{
+
+display:block;
+
+font-size:34px;
+
+margin-bottom:10px;
+
+}
+
+.journal-module h4{
+
+margin:0;
+
+font-size:16px;
+
+font-weight:700;
+
+color:#fff;
+
+}
+
+@media(max-width:1200px){
+
+.journal-modules{
+
+grid-template-columns:repeat(3,1fr);
+
+}
+
+}
+
+@media(max-width:768px){
+
+.journal-modules{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+/*=========================================================
+MODULE COLORS
+=========================================================*/
+
+.journal-module.green{
+
+background:rgba(25,215,107,.15);
+
+border:2px solid #19d76b;
+
+color:#19d76b;
+
+}
+
+
+.journal-module.blue{
+
+background:rgba(61,139,253,.15);
+
+border:2px solid #3d8bfd;
+
+color:#3d8bfd;
+
+}
+
+.journal-module.gold{
+
+background:rgba(212,175,55,.15);
+
+border:2px solid #d4af37;
+
+color:#d4af37;
+
+}
+
+.journal-module.purple{
+
+background:rgba(139,92,246,.15);
+
+border:2px solid #8b5cf6;
+
+color:#8b5cf6;
+
+}
+
+.journal-module.red{
+
+background:rgba(255,91,91,.15);
+
+border:2px solid #ff5b5b;
+
+color:#ff5b5b;
+
+}
+
+.journal-module h4{
+
+color:inherit;
+
+}
+
+.journal-module span{
+
+color:inherit;
+
+}
+
+/*=========================================================
+JOURNAL CONTENT
+=========================================================*/
+
+.journal-content{
+
+display:none;
+
+margin-top:20px;
+
+}
+
+.journal-content.show{
+
+display:block;
+
+}
+
+/*=========================================================
+ACTIVE JOURNAL MODULE
+=========================================================*/
+
+.journal-module.active{
+
+transform:translateY(-5px);
+
+box-shadow:0 0 25px rgba(255,255,255,.15);
+
+}
+

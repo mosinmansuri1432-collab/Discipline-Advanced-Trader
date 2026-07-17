@@ -528,9 +528,44 @@ id="tradeBody">
 
 </section>
 
+<!-- =========================================================
+JOURNAL MODULE NAVIGATION
+========================================================= -->
+
+<div class="journal-modules">
+
+    <div class="journal-module green" data-module="daily-content">
+        <span>📊</span>
+        <h4>Daily Summary</h4>
+    </div>
+
+    <div class="journal-module blue" data-module="psychology-content">
+        <span>🧠</span>
+        <h4>Trading Psychology</h4>
+    </div>
+
+     <div class="journal-module gold" data-module="notes-content">
+        <span>📝</span>
+        <h4>Trading Notes</h4>
+    </div>
+
+     <div class="journal-module purple" data-module="screenshots-content">
+        <span>📷</span>
+        <h4>Trade Screenshots</h4>
+    </div>
+
+     <div class="journal-module red" data-module="advanced-content">
+        <span>📈</span>
+        <h4>Advanced Analytics</h4>
+    </div>
+
+</div>
+
 <!-- Continue in Part 2 --><!-- ===========================
 DAILY SUMMARY
 =========================== -->
+
+<div id="daily-content" class="journal-content">
 
 <section class="card">
 
@@ -634,9 +669,13 @@ readonly>
 
 </section>
 
+</div>
+
 <!-- ===========================
 TRADING PSYCHOLOGY
 =========================== -->
+
+<div id="psychology-content" class="journal-content">
 
 <section class="card">
 
@@ -668,9 +707,14 @@ Trading Psychology
 
 </section>
 
+</div>
+
+
 <!-- ===========================
 NOTES
 =========================== -->
+
+<div id="notes-content" class="journal-content">
 
 <section class="card">
 
@@ -731,9 +775,14 @@ id="tomorrowPlan"></textarea>
 
 </section>
 
+</div>
+
+
 <!-- ===========================
 SCREENSHOTS
 =========================== -->
+
+<div id="screenshots-content" class="journal-content">
 
 <section class="card">
 
@@ -846,64 +895,18 @@ SCREENSHOTS
 
 </section>
 
- 
+</div> 
 
-<!-- ===========================
-CALENDAR
-=========================== -->
-
-<section class="card">
-
-<div class="calendar-header">
-
-<h2>
-
-Trading Calendar
-
-</h2>
-
-<div class="calendar-controls">
-
-<button
-id="prevMonth">
-
-<i class="fa-solid fa-chevron-left"></i>
-
-</button>
-
-<select
-id="calendarMonth">
-
-</select>
-
-<select
-id="calendarYear">
-
-</select>
-
-<button
-id="nextMonth">
-
-<i class="fa-solid fa-chevron-right"></i>
-
-</button>
-
-</div>
-
-</div>
-
-<div
-id="calendar">
-
-</div>
-
-</section>
 
 <!-- ==========================================================
 DASHBOARD ANALYTICS CENTER
 ========================================================== -->
 
-<section id="analyticsCenter" class="analytics-center">
+<div id="advanced-content"
+class="journal-content">
+
+<section id="analyticsCenter"
+class="analytics-center">
 
   
 
@@ -1562,10 +1565,70 @@ WEEKLY REPORTS
 
 </section>
 
+</div>
+
 <!-- ==========================================================
 END DASHBOARD ANALYTICS CENTER
 ========================================================== -->
 
+<!-- ===========================
+CALENDAR
+=========================== -->
+
+<div class="journal-bottom-layout">
+
+<!-- Left: Calendar (60%) -->
+
+<div class="calendar-side">
+
+<section class="card calendar-card">
+
+<div class="calendar-header">
+
+<h2>
+
+Trading Calendar
+
+</h2>
+
+<div class="calendar-controls">
+
+<button
+id="prevMonth">
+
+<i class="fa-solid fa-chevron-left"></i>
+
+</button>
+
+<select
+id="calendarMonth">
+
+</select>
+
+<select
+id="calendarYear">
+
+</select>
+
+<button
+id="nextMonth">
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</button>
+
+</div>
+
+</div>
+
+<div
+id="calendar">
+
+</div>
+
+</section>
+
+</div>
 
 <!--=========================================================
 PART 19
@@ -1573,8 +1636,13 @@ DASHBOARD POLISH V3.0
 TRADE SEARCH & FILTER
 =========================================================-->
 
-<section class="card">
+<!-- Right: Search + Backup (40%) -->
+<div class="right-side-panel">
 
+<section class="card search-card">
+
+
+    <!-- Search Section -->
     <div class="filter-header">
         <h2 class="card-title">
             <i class="fa-solid fa-magnifying-glass-chart"></i>
@@ -1654,39 +1722,19 @@ TRADE SEARCH & FILTER
 
 </section>
 
+
+
 <!--=========================================================
 END PART 19
 =========================================================-->
 
-<!-- ===========================
-SELECTED DATE DETAILS
-=========================== -->
 
-<section class="card">
-
-<h2 class="card-title">
-
-Selected Day Journal
-
-</h2>
-
-<p id="selectedDateText">
-
-Click any date on the calendar to load that day's complete journal.
-
-</p>
-
-<div id="selectedTrades">
-
-</div>
-
-</section>
 
 <!-- ===========================
 BACKUP & EXPORT
 =========================== -->
 
-<section class="card">
+<section class="card backup-card">
 
 <h2 class="card-title">
 
@@ -1775,6 +1823,10 @@ Clear Journal
 </div>
 
 </section>
+
+</div>
+
+</div>
 
 <!-- ===========================
 FOOTER

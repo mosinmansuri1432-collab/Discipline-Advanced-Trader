@@ -1719,68 +1719,30 @@ DISCIPLINE CENTER
 
 }
 
-/*=========================================================
-AI INTELLIGENCE CENTER
-=========================================================*/
+/* ===========================================
+BOTTOM LAYOUT
+=========================================== */
 
-#aiContainer{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-
-gap:20px;
-
-margin-top:20px;
-
+.journal-bottom-layout{
+    display:flex;
+    gap:20px;
+    align-items:flex-start;
+    margin-top:20px;
 }
 
-.ai-card{
-
-background:#ffffff;
-
-border:2px solid #dcdcdc;
-
-border-radius:16px;
-
-padding:20px;
-
-cursor:pointer;
-
-transition:.3s;
-
+.calendar-side{
+    flex:1;
 }
 
-.ai-card:hover{
+.right-side-panel{
 
-transform:translateY(-5px);
+    flex:1;
 
-border-color:#d32f2f;
+    display:grid;
 
-box-shadow:0 10px 25px rgba(211,47,47,.20);
+    grid-template-rows:1fr 1fr;
 
-}
-
-.ai-card h3{
-
-margin-bottom:10px;
-
-color:#d32f2f;
-
-font-size:20px;
-
-font-weight:700;
-
-}
-
-
-.ai-card p{
-
-color:#333;
-
-font-size:14px;
-
-line-height:1.6;
+    gap:20px;
 
 }
 
