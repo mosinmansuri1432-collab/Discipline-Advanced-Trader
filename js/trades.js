@@ -26,7 +26,7 @@ function loadTrades(trades = journal[currentDate].trades) {
             <td><input class="quantity" type="number" step="0.01" value="${trade.quantity}"></td>
             <td><input class="entry" type="number" step="0.01" value="${trade.entry}"></td>
             <td><input class="exit" type="number" step="0.01" value="${trade.exit}"></td>
-            <td><input class="pl" readonly value="${trade.pl}"></td>
+            
             <td>
                 <select class="emotion">
                     <option ${trade.emotion === "Confidence" ? "selected" : ""}>Confidence</option>
@@ -59,6 +59,18 @@ function loadTrades(trades = journal[currentDate].trades) {
                     <option ${trade.rule === "No" ? "selected" : ""}>No</option>
                 </select>
             </td>
+
+             <td>
+    <select class="setup">
+        <option ${trade.setup === "A1+" ? "selected" : ""}>A1+</option>
+        <option ${trade.setup === "A1" ? "selected" : ""}>A1</option>
+        <option ${trade.setup === "B1+" ? "selected" : ""}>B1+</option>
+        <option ${trade.setup === "B2+" ? "selected" : ""}>B2+</option>
+    </select>
+</td>
+
+<td><input class="pl" readonly value="${trade.pl}"></td> 
+
             <td><button class="delete-btn">Delete</button></td>
         `;
         tradeBody.appendChild(row);
@@ -70,7 +82,21 @@ function loadTrades(trades = journal[currentDate].trades) {
 /*=========================================================
 ATTACH TRADE EVENTS
 =========================================================*/
+
+
+
 function attachTradeEvents(row, index) {
+
+row.querySelectorAll("select").forEach(select => {
+
+    select.addEventListener("change", () => {
+
+        updateTrade(row, index);
+
+    });
+
+});
+
     row.querySelectorAll("input").forEach(input => {
         input.addEventListener("input", () => {
             updateTrade(row, index);
@@ -115,6 +141,7 @@ function updateTrade(row, index) {
     trade.emotion = row.querySelector(".emotion").value;
     trade.mistake = row.querySelector(".mistake-select").value; 
     trade.rule = row.querySelector(".rule").value;
+    trade.setup = row.querySelector(".setup").value;
 
     calculateTrade(trade);
     
@@ -133,6 +160,11 @@ function updateTrade(row, index) {
 updateSummary();
 
 refreshDashboard();
+
+// LIVE TARGET UPDATE
+updateTargetModule("daily");
+updateTargetModule("weekly");
+updateTargetModule("monthly");
 
 }
 

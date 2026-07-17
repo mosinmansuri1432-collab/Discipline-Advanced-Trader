@@ -38,22 +38,3 @@ async function loadDatabase(){
 
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // ID ki jagah class ".analytics-btn" ka use karein
-    const buttons = document.querySelectorAll('.analytics-btn');
-
-    buttons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Button ka 'data-dashboard' attribute check karein
-            const panelId = this.getAttribute('data-dashboard');
-            const panel = document.getElementById(panelId);
-
-            if (panel) {
-                // Panel ko toggle karein
-                panel.classList.toggle('active');
-            } else {
-                console.warn("Panel nahi mila:", panelId);
-            }
-        });
-    });
-});

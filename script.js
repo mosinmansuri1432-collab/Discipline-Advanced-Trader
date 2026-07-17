@@ -57,40 +57,32 @@ SETUP REPORT
 
 const setupReport = {
 
-    A1: {
-
-        trades: 0,
-        wins: 0,
-        losses: 0,
-        pl: 0
-
+    "A1+": {
+        trades:0,
+        wins:0,
+        losses:0,
+        pl:0
     },
 
-    A2: {
-
-        trades: 0,
-        wins: 0,
-        losses: 0,
-        pl: 0
-
+    "A1": {
+        trades:0,
+        wins:0,
+        losses:0,
+        pl:0
     },
 
-    B1: {
-
-        trades: 0,
-        wins: 0,
-        losses: 0,
-        pl: 0
-
+    "B1+": {
+        trades:0,
+        wins:0,
+        losses:0,
+        pl:0
     },
 
-    B2: {
-
-        trades: 0,
-        wins: 0,
-        losses: 0,
-        pl: 0
-
+    "B2+": {
+        trades:0,
+        wins:0,
+        losses:0,
+        pl:0
     }
 
 };
@@ -412,10 +404,11 @@ addTrade.addEventListener("click", () => {
         quantity: 1,
         entry: 0,
         exit: 0,
-        pl: 0,
         emotion: "Confidence",
         mistake: "1 NONE",
-        rule: "Yes"
+        rule: "Yes",
+        setup: (journal[currentDate].header.selectedSetup || "").split(" - ")[0],
+         pl: 0,
 
     });
 
@@ -440,7 +433,7 @@ script.js
 Part 2
 =========================================================*/
 
-const setupCards = document.querySelectorAll(".setup-card");
+const setupCards = document.querySelectorAll(".setup-cards > .setup-card");
 const setupDetails = document.getElementById("setupDetails");
 const detailTitle = document.getElementById("detailTitle");
 const detailBadge = document.getElementById("detailBadge");
@@ -471,7 +464,7 @@ const setupData = {
             "SWEENG 2 RETRES 62 LEVEL ONLY 100 Point + ho."
         ]
     },
-    "B1": {
+    "B1+": { 
         badge: "Conformation Entry",
         confidence: "90% Confident - MY GOOD B1+",
         note: "GAP UP / DOWN + WICK SETUP: High momentum condition setups.",
@@ -511,6 +504,9 @@ const setupData = {
 let activeCategoryView = "";
 
 function showSetupCategory(categoryName) {
+   
+    console.log("Setup Open :", categoryName);
+    
   const categoryInfo = setupData[categoryName];
   if (!categoryInfo) return;
 
@@ -561,8 +557,11 @@ function showSetupCategory(categoryName) {
       } else {
         journal[currentDate].header.selectedSetup = "";
       }
+
       saveDatabase();
+      
       showSetupCategory(categoryName); 
+      
     };
 
     checkboxElement.addEventListener("change", triggerCheckboxToggle);
@@ -1033,6 +1032,42 @@ function showDisciplineCategory(categoryName){
         return;
 
     }
+      
+      if(
+
+    categoryName==="daily" ||
+
+    categoryName==="weekly" ||
+
+    categoryName==="monthly"
+
+){
+
+    renderTargetModule(categoryName);
+
+    disciplineDetails.classList.add("show");
+
+    disciplineCards.forEach(card=>{
+
+        card.classList.remove("active","hide");
+
+        if(card.dataset.card===categoryName){
+
+            card.classList.add("active");
+
+        }
+
+        else{
+
+            card.classList.add("hide");
+
+        }
+
+    });
+
+    return;
+
+}
 
         disciplineNote.textContent =
     categoryInfo.note;
@@ -1100,6 +1135,159 @@ function showDisciplineCategory(categoryName){
 }
 
 /*=========================================================
+TARGET MODULE
+RENDER
+=========================================================*/
+
+function renderTargetModule(type){
+
+    const titles={
+
+        daily:"🎯 Daily",
+
+        weekly:"📅 Weekly",
+
+        monthly:"📈 Monthly"
+
+    };
+
+    disciplineNote.textContent="";
+
+    const savedTarget =
+    journal[currentDate]?.targets?.[type] || {
+
+        target:0,
+
+        done:false
+
+    };
+
+    disciplineContent.innerHTML=`
+
+        <li
+        style="
+        list-style:none;
+        ">
+
+            <div class="target-module">
+
+                <h3>
+
+                    ${titles[type]} Profit Target
+
+                </h3>
+
+                <input
+                type="number"
+                id="${type}TargetInput"
+                class="target-input"
+                data-type="${type}"
+                value="${savedTarget.target}"
+                placeholder="Enter Target">
+
+                <hr>
+
+                <p>
+
+                    <strong>
+
+                        Current Profit
+
+                    </strong>
+
+                </p>
+
+                <h3
+                id="${type}CurrentProfit">
+
+                    ₹0
+
+                </h3>
+
+                <hr>
+
+                <p>
+
+                    <strong>
+
+                        Remaining Target
+
+                    </strong>
+
+                </p>
+
+                <h3
+                id="${type}RemainingTarget">
+
+                    ₹0
+
+                </h3>
+
+                <hr>
+
+                <label
+                style="
+                display:flex;
+                align-items:center;
+                gap:12px;
+                font-size:18px;
+                font-weight:600;
+                cursor:pointer;
+                margin-top:10px;
+                ">
+
+                    <input
+                    type="checkbox"
+                    id="${type}TargetDone"
+                    class="target-done"
+                    data-type="${type}"
+                    ${savedTarget.done ? "checked" : ""}
+                    style="
+                    width:22px;
+                    height:22px;
+                    accent-color:#19d76b;
+                    cursor:pointer;
+                    flex-shrink:0;
+                    ">
+
+                    <span>
+
+                        Target Done
+
+                    </span>
+
+                </label>
+
+            </div>
+
+        </li>
+
+    `;
+
+    updateTargetModule(type);
+
+    document
+    .getElementById(`${type}TargetInput`)
+    .addEventListener("input",()=>{
+
+        updateTargetModule(type);
+
+        saveTargets();
+
+    });
+
+    document
+    .getElementById(`${type}TargetDone`)
+    .addEventListener("change",()=>{
+
+        saveTargets();
+
+    });
+
+}
+
+
+/*=========================================================
 DISCIPLINE CENTER
 PART-3
 CLICK EVENTS + RESET + LOAD
@@ -1109,7 +1297,8 @@ disciplineCards.forEach(card=>{
 
     card.addEventListener("click",()=>{
 
-        showDisciplineCategory(
+    
+      showDisciplineCategory(
 
             card.dataset.card
 
@@ -1355,9 +1544,147 @@ document.addEventListener("change",(e)=>{
 
 
     }
+   
+    if(
 
+    e.target.classList.contains("target-input") ||
+
+    e.target.classList.contains("target-done")
+
+){
+
+    saveTargets();
+
+}
 
 });
+
+/*=========================================================
+TARGET MODULE
+CURRENT PROFIT
+=========================================================*/
+
+function getTargetCurrentProfit(type){
+
+    let total = 0;
+
+    if(type==="daily"){
+
+        const trades =
+        journal[currentDate]?.trades || [];
+
+        trades.forEach(trade=>{
+
+            total += Number(trade.pl || 0);
+
+        });
+
+    }
+
+    else if(type==="weekly"){
+
+        Object.keys(journal).forEach(date=>{
+
+            const d = new Date(date);
+
+            const today = new Date(currentDate);
+
+            const start = new Date(today);
+
+            start.setDate(today.getDate()-today.getDay());
+
+            const end = new Date(start);
+
+            end.setDate(start.getDate()+6);
+
+            if(d>=start && d<=end){
+
+                (journal[date].trades || []).forEach(trade=>{
+
+                    total += Number(trade.pl || 0);
+
+                });
+
+            }
+
+        });
+
+    }
+
+    else if(type==="monthly"){
+
+        Object.keys(journal).forEach(date=>{
+
+            const d = new Date(date);
+
+            const today = new Date(currentDate);
+
+            if(
+
+                d.getMonth()===today.getMonth() &&
+
+                d.getFullYear()===today.getFullYear()
+
+            ){
+
+                (journal[date].trades || []).forEach(trade=>{
+
+                    total += Number(trade.pl || 0);
+
+                });
+
+            }
+
+        });
+
+    }
+
+    return total;
+
+}
+
+ /*=========================================================
+TARGET MODULE
+UPDATE
+=========================================================*/
+
+function updateTargetModule(type){
+
+    const targetInput =
+    document.getElementById(`${type}TargetInput`);
+
+    const currentProfit =
+    document.getElementById(`${type}CurrentProfit`);
+
+    const remainingTarget =
+    document.getElementById(`${type}RemainingTarget`);
+
+    if(
+
+        !targetInput ||
+
+        !currentProfit ||
+
+        !remainingTarget
+
+    ) return;
+
+    const target =
+    Number(targetInput.value)||0;
+
+    const current =
+    getTargetCurrentProfit(type);
+
+    const remaining =
+    target-current;
+
+    currentProfit.textContent =
+    `₹${current}`;
+
+    remainingTarget.textContent =
+    `₹${remaining}`;
+
+}
 
 /*=========================================================
 DISCIPLINE SCORE
@@ -1504,6 +1831,47 @@ function saveDisciplineChecks(){
 
     saveDatabase();
 
+
+}
+
+/*=========================================================
+TARGET MODULE
+SAVE TARGETS
+=========================================================*/
+
+function saveTargets(){
+
+    if(!journal[currentDate]){
+
+        journal[currentDate]={};
+
+    }
+
+    if(!journal[currentDate].targets){
+
+        journal[currentDate].targets={};
+
+    }
+
+    document.querySelectorAll(".target-input").forEach(input=>{
+
+        const type=input.dataset.type;
+
+        const done=document.querySelector(
+            `#${type}TargetDone`
+        );
+
+        journal[currentDate].targets[type]={
+
+            target:Number(input.value)||0,
+
+            done:done ? done.checked : false
+
+        };
+
+    });
+
+    saveDatabase();
 
 }
 
@@ -1926,8 +2294,12 @@ ACCORDION
 
 function toggleDashboard(id){
 
+  console.log("1. Click:", id);
+
     const panel =
     document.getElementById(id);
+
+    console.log("2. Before:", panel.className);
 
     if(!panel) return;
 
@@ -1956,6 +2328,8 @@ function toggleDashboard(id){
     if(!opened){
 
         panel.classList.add("show");
+
+          console.log("3. After:", panel.className);
 
         if(box){
 
@@ -2500,24 +2874,3 @@ FINAL LOAD
 
 })();
 
-/*=========================================================
-END OF FILE
-=========================================================*/
-
-document.querySelectorAll(".setup-card").forEach(card => {
-    card.addEventListener("click", () => {
-        const setupName = card.getAttribute("data-setup");
-        console.log("Click hua:", setupName);
-        
-        // Data dikhane ka logic
-        const details = document.getElementById("setupDetails");
-        details.style.display = "block";
-        
-        // Yahan aap apna function call karein
-        showSetupCategory(setupName); 
-    });
-});
-
-document.getElementById("resetSetup").addEventListener("click", () => {
-    document.getElementById("setupDetails").style.display = "none";
-});

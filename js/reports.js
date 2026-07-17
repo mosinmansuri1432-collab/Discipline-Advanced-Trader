@@ -363,7 +363,7 @@ function calculateSetupAnalytics(){
     RESET
     =========================*/
 
-    ["A1","A2","B1","B2"].forEach(setup=>{
+      ["A1+","A1","B1+","B2+"].forEach(setup=>{
 
         setupReport[setup].trades = 0;
         setupReport[setup].wins = 0;
@@ -426,7 +426,7 @@ function updateSetupAnalyticsUI(){
 
     updateOneSetup(
 
-        "A1",
+         "A1+",
 
         setupA1Wins,
 
@@ -440,7 +440,7 @@ function updateSetupAnalyticsUI(){
 
     updateOneSetup(
 
-        "A2",
+        "A1",
 
         setupA2Wins,
 
@@ -454,7 +454,7 @@ function updateSetupAnalyticsUI(){
 
     updateOneSetup(
 
-        "B1",
+        "B1+",
 
         setupB1Wins,
 
@@ -468,7 +468,7 @@ function updateSetupAnalyticsUI(){
 
     updateOneSetup(
 
-        "B2",
+         "B2+",
 
         setupB2Wins,
 
@@ -1051,11 +1051,12 @@ function drawSetupChart(){
         data:{
 
             labels:[
+
+                "A1+",
                 "A1",
-                "A2",
-                "B1",
-                "B2"
-            ],
+                "B1+",
+                "B2+"
+             ],
 
             datasets:[{
 
@@ -1063,13 +1064,13 @@ function drawSetupChart(){
 
                 data:[
 
-                    setupReport.A1.pl,
+                    setupReport["A1+"].pl,
 
-                    setupReport.A2.pl,
+                    setupReport["A1"].pl,
 
-                    setupReport.B1.pl,
+                    setupReport["B1+"].pl,
 
-                    setupReport.B2.pl
+                    setupReport["B2+"].pl
 
                 ],
 
