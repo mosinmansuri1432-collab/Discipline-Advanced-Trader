@@ -6,6 +6,7 @@ VERSION : V3.1
 
 "use strict";
 
+
 /*=========================================================
 DATABASE
 =========================================================*/
@@ -23,7 +24,19 @@ async function loadDatabase(){
 
     try{
 
-        const response = await fetch("/api/trades");
+        const { data } = await client.auth.getUser();
+
+        const user = data.user;
+
+if (!user) {
+
+    window.location.href = "login.html";
+
+    return;
+
+}
+
+const response = await fetch("/api/trades?user_id=" + user.id);
 
         journal = await response.json();
 

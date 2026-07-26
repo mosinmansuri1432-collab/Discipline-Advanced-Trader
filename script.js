@@ -1888,7 +1888,21 @@ async function saveDatabase(){
 
     try{
 
-       await fetch("/api/trades",{
+        const { data } = await client.auth.getUser();
+
+        const user = data.user;
+
+        if (!user) {
+
+            alert("Login Required");
+
+            window.location.href = "login.html";
+
+            return;
+
+        }
+
+        await fetch("/api/trades",{
 
             method:"POST",
 
@@ -1896,7 +1910,13 @@ async function saveDatabase(){
                 "Content-Type":"application/json"
             },
 
-            body:JSON.stringify(journal)
+            body:JSON.stringify({
+
+                user_id: user.id,
+
+                journal: journal
+
+            })
 
         });
 
