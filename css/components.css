@@ -2110,3 +2110,153 @@ box-shadow:0 0 25px rgba(255,255,255,.15);
 
 }
 
+/*=========================================================
+PROFILE BUTTON
+=========================================================*/
+
+.profile-btn{
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:10px;
+
+height:48px;
+
+padding:0 18px;
+
+background:#1b2233;
+
+border:1px solid var(--border);
+
+border-radius:12px;
+
+color:#fff;
+
+font-size:14px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.30s;
+
+}
+
+.profile-btn:hover{
+
+border-color:var(--gold);
+
+background:#232c42;
+
+}
+
+.profile-btn i{
+
+font-size:14px;
+
+}
+
+/*=========================================================
+PROFILE MENU
+=========================================================*/
+
+.profile-menu{
+
+position:absolute;
+
+top:60px;
+
+right:0;
+
+width:260px;
+
+background:#1b2233;
+
+border:1px solid var(--border);
+
+border-radius:12px;
+
+padding:15px;
+
+display:none;
+
+z-index:999;
+
+box-shadow:0 10px 30px rgba(0,0,0,.35);
+
+}
+
+.profile-header{
+
+margin-bottom:12px;
+
+}
+
+.profile-header h4{
+
+margin:0;
+
+color:#fff;
+
+font-size:16px;
+
+}
+
+.profile-header p{
+
+margin-top:5px;
+
+font-size:12px;
+
+color:#aaa;
+
+word-break:break-word;
+
+}
+
+.profile-menu hr{
+
+border:none;
+
+border-top:1px solid var(--border);
+
+margin:12px 0;
+
+}
+
+.profile-menu button{
+
+width:100%;
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+padding:12px;
+
+background:none;
+
+color:#fff;
+
+border:none;
+
+border-radius:8px;
+
+font-size:14px;
+
+cursor:pointer;
+
+}
+
+.profile-menu button:hover{
+
+background:#2b3650;
+
+}
+

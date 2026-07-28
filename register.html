@@ -8,7 +8,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>TraderOS Login</title>
+    <title>TraderOS Register</title>
 
     <link rel="stylesheet"
           href="login.css">
@@ -23,9 +23,15 @@
 
         <h1>TraderOS</h1>
 
-        <p>Discipline Advanced Trader Journal</p>
+        <p>Create Your Trading Account</p>
 
-        <form id="loginForm">
+        <form id="registerForm">
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Full Name"
+                required>
 
             <input
                 type="email"
@@ -39,9 +45,15 @@
                 placeholder="Password"
                 required>
 
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm Password"
+                required>
+
             <button type="submit">
 
-                Login
+                Create Account
 
             </button>
 
@@ -49,20 +61,21 @@
 
         <div class="login-links">
 
-    <a href="register.html">Create Account</a>
+            <a href="login.html">Already have an account? Login</a>
 
-    <a href="#">Forgot Password?</a>
-
-</div>
+        </div>
 
     </div>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="js/supabase.js"></script>
-<script src="login.js"></script>
+
+<script src="js/register.js"></script>
 
 </body>
 
 </html>
+
