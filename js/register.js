@@ -40,7 +40,7 @@ form.addEventListener("submit", async (e) => {
 
     }
 
-    const { error } = await client.auth.signUp({
+   const { data, error } = await client.auth.signUp({
 
     email,
 
@@ -67,7 +67,9 @@ form.addEventListener("submit", async (e) => {
         return;
 
     }
+    
 
+    
     alert("Account created successfully. Please login.");
 
     window.location.href = "login.html";

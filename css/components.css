@@ -2260,3 +2260,65 @@ background:#2b3650;
 
 }
 
+/*=========================================================
+PREMIUM LOCK
+=========================================================*/
+
+.premium-lock{
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin-top:20px;
+
+    padding:35px;
+
+    border-radius:16px;
+
+    background:#111827;
+
+    border:2px dashed #facc15;
+
+    text-align:center;
+
+}
+
+.premium-lock-content i{
+
+    font-size:42px;
+
+    color:#facc15;
+
+    margin-bottom:15px;
+
+}
+
+.premium-lock-content h2{
+
+    margin-bottom:10px;
+
+}
+
+.premium-lock-content p{
+
+    color:#bdbdbd;
+
+    margin-bottom:20px;
+
+}
+
+#upgradePremium{
+
+    padding:12px 24px;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+}
+

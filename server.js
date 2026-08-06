@@ -116,6 +116,94 @@ app.post("/api/trades", async (req, res) => {
 
 });
 
+// Get Profile
+
+app.get("/api/profile", async (req, res) => {
+
+    try {
+
+        const user_id = req.query.user_id;
+
+        const { data, error } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", user_id)
+            .maybeSingle();
+
+        if (error) throw error;
+
+        res.json(data);
+
+    } catch (err) {
+
+        res.status(500).json({
+
+            success: false,
+
+            error: err.message
+
+        });
+
+    }
+
+});
+
+// Create / Update Profile
+
+app.post("/api/profile", async (req, res) => {
+
+    try {
+
+        const { id, name, email } = req.body;
+
+        const { data: existing } = await supabase
+            .from("profiles")
+            .select("id")
+            .eq("id", id)
+            .maybeSingle();
+
+        let error;
+
+        if (existing) {
+
+            ({ error } = await supabase
+                .from("profiles")
+                .update({
+                    name,
+                    email
+                })
+                .eq("id", id));
+
+        } else {
+
+            ({ error } = await supabase
+                .from("profiles")
+                .insert([{
+                    id,
+                    name,
+                    email,
+                    role: "free",
+                    plan: "free",
+                    premium: false
+                }]));
+
+        }
+
+        if (error) throw error;
+
+        res.json({ success: true });
+
+    } catch (err) {
+
+        res.status(500).json({
+            success: false,
+            error: err.message
+        });
+
+    }
+
+});
+
 app.listen(PORT, () => {
 
     console.log("===================================");

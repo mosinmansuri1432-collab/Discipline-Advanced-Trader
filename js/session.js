@@ -1,3 +1,27 @@
+
+
+/*=========================================================
+PREMIUM MODULE
+=========================================================*/
+
+function togglePremiumModule(
+
+    moduleId,
+
+    lockId,
+
+    hasAccess
+
+){
+
+    document.getElementById(moduleId).style.display =
+        hasAccess ? "block" : "none";
+
+    document.getElementById(lockId).style.display =
+        hasAccess ? "none" : "block";
+
+}
+
 /*=========================================================
 SESSION CHECK
 =========================================================*/
@@ -25,11 +49,26 @@ console.log(data.session.user);
 
 const user = data.session.user;
 
-const fullName =
-    user.user_metadata.full_name || "User";
+/*=========================================================
+LOAD USER PROFILE
+=========================================================*/
 
-const firstName =
-    fullName.split(" ")[0];
+const response = await fetch(
+
+    "/api/profile?user_id=" + user.id
+
+);
+
+const profile = await response.json();
+
+window.currentUserProfile = profile;
+
+const fullName =
+    user.user_metadata.full_name ||
+    user.user_metadata.name ||
+    user.email.split("@")[0];
+
+const firstName = fullName.split(" ")[0];
 
 document.getElementById("userName").textContent =
     firstName;
@@ -40,8 +79,35 @@ document.getElementById("profileName").textContent =
 document.getElementById("profileEmail").textContent =
     user.email;
 
+/*=========================================================
+PREMIUM ACCESS
+=========================================================*/
+
+const hasAccess =
+    profile.role === "admin" ||
+    profile.premium === true;
+
+togglePremiumModule(
+
+    "setupModule",
+
+    "setupPremiumLock",
+
+    hasAccess
+
+);
+
+togglePremiumModule(
+
+    "disciplineModule",
+
+    "disciplinePremiumLock",
+
+    hasAccess
+
+);
+
 }
 
 checkSession();
-
 

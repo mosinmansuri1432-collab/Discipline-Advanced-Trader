@@ -39,6 +39,23 @@ form.addEventListener("submit", async (e) => {
         return;
     }
 
+    const { data: sessionData } = await client.auth.getUser();
+
+const user = sessionData.user;
+
+await fetch("/api/profile", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        id: user.id,
+        name: user.user_metadata?.full_name || "User",
+        email: user.email
+    })
+    
+});
+
     window.location.href = "index.html";
 
 });
