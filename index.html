@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Discipline Advanced Trader Journal V2</title>
+<title>SANA  VISIONARY TRADER Journal V2</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -23,7 +23,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/dashboard.css">
 
-<link rel="stylesheet" href="style.css">
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -53,7 +53,7 @@ HEADER
 
 <div>
 
-<h1>DISCIPLINE ADVANCED TRADER</h1>
+<h1>SANA  VISIONARY TRADER</h1>
 
 <p>Professional Trading Journal V2</p>
 
@@ -109,48 +109,33 @@ id="journalDate">
 </div>
 
 <div class="input-box">
-
     <label>&nbsp;</label>
-
     <button id="profileBtn" class="profile-btn">
-
         <i class="fa-solid fa-user"></i>
-
         <span id="userName">User</span>
-
         <i class="fa-solid fa-chevron-down"></i>
-
     </button>
 
-   <div id="profileMenu" class="profile-menu">
-
-    <div class="profile-header">
-
-        <h4 id="profileName">User</h4>
-
-        <p id="profileEmail">user@email.com</p>
-
+    <!-- FIXED: Wrapped all dropdown contents inside a proper dropdown container -->
+    <div id="profileDropdownMenu" class="profile-dropdown-menu" style="display: none;">
+        <div class="profile-header">
+            <h4 id="profileName">User</h4>
+            <p id="profileEmail">user@email.com</p>
+        </div>
+        <hr>
+        <button id="changePasswordBtn">
+            <i class="fa-solid fa-key"></i>
+            Change Password
+        </button>
+        <button id="adminPanelBtn" style="display:none;">
+            <i class="fa-solid fa-user-shield"></i>
+            Admin Panel
+        </button>
+        <button id="logoutBtn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </button>
     </div>
-
-    <hr>
-
-    <button id="changePasswordBtn">
-
-        <i class="fa-solid fa-key"></i>
-
-        Change Password
-
-    </button>
-
-    <button id="logoutBtn">
-
-        <i class="fa-solid fa-right-from-bracket"></i>
-
-        Logout
-
-    </button>
-
-</div>
 
 </div>
 
@@ -1944,7 +1929,7 @@ FOOTER
 
 <h3>
 
-DISCIPLINE ADVANCED TRADER
+SANA  VISIONARY TRADER
 
 </h3>
 

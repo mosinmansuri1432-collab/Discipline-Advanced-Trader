@@ -1,0 +1,710 @@
+/* =========================================
+   SANA ELITE TRADER - ADMIN PANEL
+   ========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, Arial, sans-serif;
+    background: #070b14;
+    color: #f8fafc;
+}
+
+
+/* =========================================
+   MAIN PAGE
+   ========================================= */
+
+.admin-page {
+    min-height: 100vh;
+    padding: 35px 40px;
+    background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 32%),
+        radial-gradient(circle at top right, rgba(14, 165, 233, 0.08), transparent 28%),
+        #070b14;
+}
+
+.admin-container {
+    max-width: 1450px;
+    margin: 0 auto;
+}
+
+
+/* =========================================
+   HEADER
+   ========================================= */
+
+.admin-header {
+    margin-bottom: 38px;
+}
+
+.admin-header h1 {
+    margin: 0;
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.7px;
+}
+
+.admin-header p {
+    margin: 8px 0 0;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   DASHBOARD
+   ========================================= */
+
+.admin-dashboard {
+    margin-bottom: 30px;
+}
+
+.admin-dashboard h2,
+.admin-users h2 {
+    margin: 0 0 20px;
+    font-size: 21px;
+    font-weight: 750;
+    color: #f8fafc;
+}
+
+
+/* =========================================
+   STAT CARDS
+   ========================================= */
+
+.admin-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.admin-card {
+    position: relative;
+    padding: 24px;
+    min-height: 125px;
+
+    background: linear-gradient(
+        145deg,
+        #151e31,
+        #0e1626
+    );
+
+    border: 1px solid #263653;
+    border-radius: 16px;
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+
+    transition: 0.2s ease;
+}
+
+.admin-card:hover {
+    transform: translateY(-2px);
+    border-color: #3b82f6;
+}
+
+.admin-card h3 {
+    margin: 0 0 14px;
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.admin-card p {
+    margin: 0;
+    font-size: 34px;
+    line-height: 1;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+
+/* =========================================
+   USERS CONTAINER
+   ========================================= */
+
+.admin-users {
+    padding: 24px;
+    background: linear-gradient(
+        145deg,
+        #111a2b,
+        #0c1423
+    );
+
+    border: 1px solid #263653;
+    border-radius: 17px;
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+
+    overflow-x: auto;
+}
+
+
+/* =========================================
+   TABLE
+   ========================================= */
+
+.admin-users table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+
+    background: #0c1422;
+    border: 1px solid #263653;
+    border-radius: 12px;
+}
+
+
+/* HEADER ROW */
+
+.admin-users thead th {
+    padding: 15px 14px;
+
+    background: #1d2b45;
+
+    color: #cbd5e1;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-align: left;
+
+    border-bottom: 1px solid #334765;
+
+    white-space: nowrap;
+}
+
+
+/* FIRST HEADER CORNER */
+
+.admin-users thead th:first-child {
+    border-top-left-radius: 11px;
+}
+
+
+/* LAST HEADER CORNER */
+
+.admin-users thead th:last-child {
+    border-top-right-radius: 11px;
+}
+
+
+/* TABLE BODY */
+
+.admin-users tbody td {
+    padding: 16px 14px;
+
+    color: #e2e8f0;
+
+    font-size: 13px;
+
+    border-bottom: 1px solid #202e46;
+
+    white-space: nowrap;
+}
+
+
+/* ROW */
+
+.admin-users tbody tr {
+    transition: 0.18s ease;
+}
+
+
+/* HOVER */
+
+.admin-users tbody tr:hover {
+    background: #151f32;
+}
+
+
+/* LAST ROW */
+
+.admin-users tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================================
+   PREMIUM / ROLE BADGES
+   ========================================= */
+
+.admin-users td:nth-child(3),
+.admin-users td:nth-child(4),
+.admin-users td:nth-child(5) {
+    font-weight: 600;
+}
+
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+
+.view-user-btn,
+.edit-user-btn {
+    border: none;
+
+    padding: 8px 14px;
+
+    border-radius: 7px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.18s ease;
+}
+
+
+/* VIEW */
+
+.view-user-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.view-user-btn:hover {
+    background: #3b82f6;
+    transform: translateY(-1px);
+}
+
+
+/* EDIT */
+
+.edit-user-btn {
+    background: #f59e0b;
+    color: #111827;
+}
+
+.edit-user-btn:hover {
+    background: #fbbf24;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   VIEW USER
+   ========================================= */
+
+#userDetails {
+    margin-top: 20px;
+    padding: 20px;
+
+    background: #0b1423;
+
+    border: 1px solid #263653;
+    border-radius: 12px;
+}
+
+
+/* =========================================
+   EDIT USER FORM
+   ========================================= */
+
+#editUserForm {
+    margin-top: 20px;
+    padding: 24px;
+
+    background: #0b1423;
+
+    border: 1px solid #263653;
+    border-radius: 12px;
+}
+
+#editUserForm h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+
+    color: #ffffff;
+}
+
+#editUserForm label {
+    display: block;
+
+    margin: 13px 0 6px;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#editUserForm input,
+#editUserForm select {
+    width: 100%;
+    max-width: 500px;
+
+    padding: 11px 13px;
+
+    background: #111b2d;
+
+    border: 1px solid #30415f;
+    border-radius: 8px;
+
+    color: #ffffff;
+
+    outline: none;
+}
+
+#editUserForm input:focus,
+#editUserForm select:focus {
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+
+/* SAVE BUTTON */
+
+#saveUserChanges {
+    margin-top: 20px;
+
+    padding: 11px 20px;
+
+    background: #16a34a;
+
+    border: none;
+    border-radius: 8px;
+
+    color: white;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.18s ease;
+}
+
+#saveUserChanges:hover {
+    background: #22c55e;
+    transform: translateY(-1px)
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 900px) {
+
+    .admin-page {
+        padding: 25px 18px;
+    }
+
+    .admin-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-header h1 {
+        font-size: 28px;
+    }
+
+    .admin-users {
+        padding: 16px;
+    }
+
+}
+
+/* =========================================
+   ADMIN PANEL FINAL POLISH
+   ========================================= */
+
+/* Header */
+.admin-header {
+    padding: 24px 28px;
+    margin-bottom: 30px;
+    background: linear-gradient(135deg, #17243a, #0f1728);
+    border: 1px solid #304361;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.admin-header h1 {
+    font-size: 30px;
+    letter-spacing: -0.5px;
+}
+
+.admin-header p {
+    color: #9fb0c8;
+}
+
+
+/* Dashboard cards */
+.admin-cards {
+    gap: 18px;
+}
+
+.admin-card {
+    min-height: 135px;
+    padding: 25px;
+    overflow: hidden;
+}
+
+.admin-card::after {
+    content: "";
+    position: absolute;
+    right: -35px;
+    bottom: -45px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.08);
+}
+
+.admin-card:nth-child(2)::after {
+    background: rgba(34, 197, 94, 0.08);
+}
+
+.admin-card:nth-child(3)::after {
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.admin-card p {
+    font-size: 38px;
+}
+
+
+/* Users section */
+.admin-users {
+    margin-top: 28px;
+    padding: 26px;
+}
+
+
+/* TABLE HEADER - clearly lighter */
+.admin-users thead th {
+    background: #263957;
+    color: #e8f0ff;
+    padding: 17px 15px;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    border-bottom: 2px solid #3b82f6;
+}
+
+
+/* Table rows */
+.admin-users tbody td {
+    padding: 17px 15px;
+    font-size: 13px;
+}
+
+.admin-users tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.018);
+}
+
+.admin-users tbody tr:hover {
+    background: rgba(59, 130, 246, 0.08);
+}
+
+
+/* User names */
+.admin-users tbody td:first-child {
+    font-weight: 700;
+    color: #ffffff;
+}
+
+
+/* Role */
+.admin-users tbody td:nth-child(3) {
+    color: #93c5fd;
+}
+
+
+/* Plan */
+.admin-users tbody td:nth-child(4) {
+    color: #c4b5fd;
+}
+
+
+/* Premium */
+.admin-users tbody td:nth-child(5) {
+    color: #86efac;
+}
+
+
+/* Action area */
+.admin-users tbody td:last-child {
+    min-width: 150px;
+}
+
+
+/* Buttons */
+.view-user-btn,
+.edit-user-btn {
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.view-user-btn {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.edit-user-btn {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.20);
+}
+
+
+/* Hide empty containers */
+#userDetails:empty,
+#editUserForm:empty {
+    display: none;
+}
+
+
+/* When content appears */
+#userDetails:not(:empty),
+#editUserForm:not(:empty) {
+    animation: adminFadeIn 0.2s ease;
+}
+
+
+@keyframes adminFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================================
+   THREE DASHBOARD CARDS - DISTINCT COLORS
+   ========================================= */
+
+.admin-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    transition: all 0.2s ease;
+}
+
+
+/* ==============================
+   TOTAL USERS - BLUE
+   ============================== */
+
+.admin-card:nth-child(1) {
+    background: linear-gradient(
+        135deg,
+        #102a56 0%,
+        #123b78 55%,
+        #0d2850 100%
+    );
+
+    border: 1px solid #2563eb;
+
+    box-shadow:
+        0 10px 28px rgba(37, 99, 235, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.admin-card:nth-child(1) h3 {
+    color: #93c5fd;
+}
+
+.admin-card:nth-child(1) p {
+    color: #ffffff;
+}
+
+
+/* ==============================
+   PREMIUM USERS - GREEN
+   ============================== */
+
+.admin-card:nth-child(2) {
+    background: linear-gradient(
+        135deg,
+        #103c2d 0%,
+        #126044 55%,
+        #0d382b 100%
+    );
+
+    border: 1px solid #16a34a;
+
+    box-shadow:
+        0 10px 28px rgba(22, 163, 74, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.admin-card:nth-child(2) h3 {
+    color: #86efac;
+}
+
+.admin-card:nth-child(2) p {
+    color: #ffffff;
+}
+
+
+/* ==============================
+   ACTIVE SUBSCRIPTIONS - ORANGE
+   ============================== */
+
+.admin-card:nth-child(3) {
+    background: linear-gradient(
+        135deg,
+        #4a2d0b 0%,
+        #70420d 55%,
+        #432808 100%
+    );
+
+    border: 1px solid #f59e0b;
+
+    box-shadow:
+        0 10px 28px rgba(245, 158, 11, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.admin-card:nth-child(3) h3 {
+    color: #fcd34d;
+}
+
+.admin-card:nth-child(3) p {
+    color: #ffffff;
+}
+
+
+/* ==============================
+   REMOVE OLD CIRCLE EFFECT
+   ============================== */
+
+.admin-card::after {
+    display: none;
+}
+
+
+/* ==============================
+   HOVER
+   ============================== */
+
+.admin-card:nth-child(1):hover {
+    border-color: #60a5fa;
+    transform: translateY(-3px);
+}
+
+.admin-card:nth-child(2):hover {
+    border-color: #4ade80;
+    transform: translateY(-3px);
+}
+
+.admin-card:nth-child(3):hover {
+    border-color: #fbbf24;
+    transform: translateY(-3px);
+}
+

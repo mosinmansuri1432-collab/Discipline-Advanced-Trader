@@ -428,7 +428,7 @@ START
 =========================================================*/
 
 /*========================================================
-DISCIPLINE ADVANCED TRADER JOURNAL V2
+SANA  VISIONARY TRADER JOURNAL V2
 script.js
 Part 2
 =========================================================*/
@@ -2050,7 +2050,7 @@ averageRR;
 
 
 ;/*=========================================================
-DISCIPLINE ADVANCED TRADER JOURNAL V2
+SANA  VISIONARY TRADER JOURNAL V2
 script.js
 Part 5 (FINAL)
 =========================================================*/
@@ -2254,7 +2254,7 @@ pdf.setFontSize(18);
 
 pdf.text(
 
-"DISCIPLINE ADVANCED TRADER",
+"SANA  VISIONARY TRADER",
 
 20,
 
@@ -2889,10 +2889,11 @@ FINAL LOAD
     refreshDashboard();
 
     console.log(
-        "DISCIPLINE ADVANCED TRADER JOURNAL V2 READY"
+        "SANA  VISIONARY TRADER JOURNAL V2 READY"
     );
 
 })();
+
 
 /*=========================================================
 PROFILE MENU
@@ -2900,51 +2901,48 @@ PROFILE MENU
 
 const profileBtn = document.getElementById("profileBtn");
 
-const profileMenu = document.getElementById("profileMenu");
+const profileMenu = document.getElementById("profileDropdownMenu");
 
-profileBtn.addEventListener("click", () => {
+if (profileBtn && profileMenu) {
+    profileBtn.addEventListener("click", () => {
+        if (profileMenu.style.display === "block") {
+            profileMenu.style.display = "none";
+        } else {
+            profileMenu.style.display = "block";
+        }
+    });
 
-    if (profileMenu.style.display === "block") {
-
-        profileMenu.style.display = "none";
-
-    } else {
-
-        profileMenu.style.display = "block";
-
-    }
-
-});
-
-document.addEventListener("click", (e) => {
-
-    if (
-        !profileBtn.contains(e.target) &&
-        !profileMenu.contains(e.target)
-    ) {
-
-        profileMenu.style.display = "none";
-
-    }
-
-});
+    document.addEventListener("click", (e) => {
+        if (
+            !profileBtn.contains(e.target) &&
+            !profileMenu.contains(e.target)
+        ) {
+            profileMenu.style.display = "none";
+        }
+    });
+}
 
 /*=========================================================
 JOURNAL MODULES
 =========================================================*/
 
 document.querySelectorAll(".journal-module").forEach(card=>{
-
     card.addEventListener("click",()=>{
-
         const target = document.getElementById(card.dataset.module);
-
         if(!target) return;
-
         card.classList.toggle("active");
-
         target.classList.toggle("show");
-
     });
-
 });
+
+/*=========================================================
+UPGRADE TO PREMIUM
+=========================================================*/
+
+const upgradeBtn = document.getElementById("upgradePremium");
+
+if (upgradeBtn) {
+    upgradeBtn.addEventListener("click", () => {
+        window.location.href = "pricing.html";
+    });
+}

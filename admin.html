@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SANA VISIONARY TRADERAdmin Panel</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+
+</head>
+
+<body>
+
+    <div class="admin-page">
+
+        <div class="admin-container">
+
+            <!-- Admin Header -->
+            <div class="admin-header">
+
+                <div>
+                    <h1>SANA VISIONARY TRADERAdmin Panel</h1>
+                    <p>Manage users, subscriptions and accounts</p>
+                </div>
+
+            </div>
+
+
+            <!-- Dashboard -->
+            <section class="admin-dashboard">
+
+                <h2>Admin Dashboard</h2>
+
+                <div class="admin-cards">
+
+                    <div class="admin-card">
+                        <h3>Total Users</h3>
+                        <p id="totalUsers">0</p>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>Premium Users</h3>
+                        <p id="premiumUsers">0</p>
+                    </div>
+
+                    <div class="admin-card">
+                        <h3>Active Subscriptions</h3>
+                        <p id="activeSubscriptions">0</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Users Section -->
+            <section class="admin-users">
+
+                <h2>Users</h2>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Plan</th>
+                            <th>Premium</th>
+                            <th>Expiry</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="usersTableBody">
+                    </tbody>
+
+                </table>
+
+
+                <!-- Selected User -->
+                <div id="userDetails"></div>
+
+                <!-- Edit User -->
+                <div id="editUserForm"></div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <!-- Admin JS -->
+    <script src="js/admin.js"></script>
+
+
+</body>
+
+</html>
