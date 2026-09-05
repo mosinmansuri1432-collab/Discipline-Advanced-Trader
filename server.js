@@ -121,7 +121,6 @@ app.post("/api/trades", async (req, res) => {
 });
 
 // Get Profile
-
 app.get("/api/profile", async (req, res) => {
 
     try {
@@ -141,11 +140,46 @@ app.get("/api/profile", async (req, res) => {
     } catch (err) {
 
         res.status(500).json({
-
             success: false,
-
             error: err.message
+        });
 
+    }
+
+});
+
+
+// Get Subscriptions
+app.get("/api/subscriptions", async (req, res) => {
+
+    try {
+
+        const user_id = req.query.user_id;
+
+        if (!user_id) {
+            return res.status(400).json({
+                success: false,
+                error: "user_id is required"
+            });
+        }
+
+        const { data, error } = await supabase
+            .from("subscriptions")
+            .select("*")
+            .eq("user_id", user_id)
+            .order("start_date", { ascending: false });
+
+        if (error) throw error;
+
+        res.json(data || []);
+
+    } catch (err) {
+
+        console.error("SUBSCRIPTIONS API ERROR:", err);
+
+        res.status(500).json({
+            success: false,
+            error: err.message
         });
 
     }
@@ -196,6 +230,42 @@ app.post("/api/profile", async (req, res) => {
         if (error) throw error;
 
         res.json({ success: true });
+
+    } catch (err) {
+
+        res.status(500).json({
+            success: false,
+            error: err.message
+        });
+
+    }
+
+});
+
+// Get User Payments
+
+app.get("/api/payments", async (req, res) => {
+
+    try {
+
+        const user_id = req.query.user_id;
+
+        if (!user_id) {
+            return res.status(400).json({
+                success: false,
+                error: "user_id is required"
+            });
+        }
+
+        const { data, error } = await supabase
+            .from("payments")
+            .select("*")
+            .eq("user_id", user_id)
+            .order("payment_date", { ascending: false });
+
+        if (error) throw error;
+
+        res.json(data || []);
 
     } catch (err) {
 
@@ -311,7 +381,48 @@ console.log(req.body);
 
     console.log("SUBSCRIPTION SAVED");
 
+// SAVE PAYMENT HISTORY
 
+const { data: existingPayment } = await supabase
+    .from("payments")
+    .select("id")
+    .eq("razorpay_payment_id", razorpay_payment_id)
+    .maybeSingle();
+
+if (!existingPayment) {
+
+    const { error: paymentError } = await supabase
+        .from("payments")
+        .insert([
+            {
+                user_id: req.body.user_id,
+                plan: req.body.plan,
+                amount: req.body.amount,
+                payment_status: "success",
+                razorpay_payment_id: razorpay_payment_id,
+                razorpay_order_id: razorpay_order_id,
+                payment_date: startDate
+            }
+        ]);
+
+    if (paymentError) {
+
+        console.error("PAYMENT HISTORY ERROR:", paymentError);
+
+        return res.status(500).json({
+            success: false,
+            error: paymentError.message
+        });
+
+    }
+
+    console.log("PAYMENT HISTORY SAVED");
+
+} else {
+
+    console.log("PAYMENT ALREADY EXISTS");
+
+}
 
   const { error: profileError } = await supabase
     .from("profiles")

@@ -2,7 +2,7 @@
 
 console.log("Pricing.js Loaded");
 
-const RAZORPAY_KEY_ID = "rzp_test_TMkXLI0Orbd8xj";
+const RAZORPAY_KEY_ID = "rzp_live_TNfh05O7Puz47b";
 
 const planDetails = {
 

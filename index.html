@@ -22,7 +22,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/dashboard.css">
-
+<link rel="stylesheet" href="css/profile.css">
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -30,6 +30,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
 
 </head>
 
@@ -116,26 +118,128 @@ id="journalDate">
         <i class="fa-solid fa-chevron-down"></i>
     </button>
 
-    <!-- FIXED: Wrapped all dropdown contents inside a proper dropdown container -->
-    <div id="profileDropdownMenu" class="profile-dropdown-menu" style="display: none;">
-        <div class="profile-header">
-            <h4 id="profileName">User</h4>
-            <p id="profileEmail">user@email.com</p>
+<!-- PROFILE DROPDOWN -->
+<div id="profileDropdownMenu" class="profile-dropdown-menu" style="display: none;">
+
+    
+
+    <!-- MY PROFILE -->
+    <button id="myProfileBtn">
+        <i class="fa-solid fa-user"></i>
+        My Profile
+    </button>
+
+<!-- MY PAYMENTS -->
+<button id="myPaymentsBtn">
+    <i class="fa-solid fa-credit-card"></i>
+    My Payments
+</button>
+
+<!-- MY PLAN -->
+<button id="myPlanBtn">
+    <i class="fa-solid fa-gem"></i>
+    My Plan
+</button>
+
+
+
+<!-- MY PLAN DETAILS -->
+<div id="myPlanDetails" style="display:none;">
+
+    <hr>
+
+    <div class="profile-details">
+
+        <div class="profile-detail-row">
+            <span>Current Plan</span>
+            <strong id="myPlanName">Free</strong>
         </div>
-        <hr>
-        <button id="changePasswordBtn">
-            <i class="fa-solid fa-key"></i>
-            Change Password
-        </button>
-        <button id="adminPanelBtn" style="display:none;">
-            <i class="fa-solid fa-user-shield"></i>
-            Admin Panel
-        </button>
-        <button id="logoutBtn">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            Logout
-        </button>
+
+        <div class="profile-detail-row">
+            <span>Status</span>
+            <strong id="myPlanStatus">Inactive</strong>
+        </div>
+
+        <div class="profile-detail-row">
+            <span>Start Date</span>
+            <strong id="myPlanStart">---</strong>
+        </div>
+
+        <div class="profile-detail-row">
+            <span>Expiry Date</span>
+            <strong id="myPlanExpiry">---</strong>
+        </div>
+
+        <div class="profile-detail-row">
+            <span>Amount</span>
+            <strong id="myPlanAmount">---</strong>
+        </div>
+
     </div>
+
+</div>
+
+<!-- MY PAYMENTS DETAILS -->
+<div id="myPaymentsDetails" class="my-payments-details" style="display: none;">
+
+    <div class="payment-empty-state">
+        <i class="fa-solid fa-receipt"></i>
+        <h4>No Payments Yet</h4>
+        <p>Your payment history will appear here.</p>
+    </div>
+
+</div>
+
+<!-- MY PROFILE DETAILS -->
+<div id="myProfileDetails" style="display:none;">
+
+    <hr>
+
+    <div class="profile-details">
+
+        <div class="profile-detail-row">
+            <span>Name</span>
+            <strong id="myProfileName">User</strong>
+        </div>
+
+        <div class="profile-detail-row">
+            <span>Email</span>
+            <strong id="myProfileEmail">user@email.com</strong>
+        </div>
+
+        <div class="profile-detail-row">
+            <span>User ID</span>
+            <strong id="myProfileUserId">---</strong>
+        </div>
+
+        <div class="profile-detail-row">
+            <span>Plan</span>
+            <strong id="myProfilePlan">Free</strong>
+        </div>
+
+    </div>
+
+</div>
+
+    <!-- CHANGE PASSWORD -->
+    <button id="changePasswordBtn">
+        <i class="fa-solid fa-key"></i>
+        Change Password
+    </button>
+
+    <!-- ADMIN PANEL -->
+    <button id="adminPanelBtn" style="display:none;">
+        <i class="fa-solid fa-user-shield"></i>
+        Admin Panel
+    </button>
+
+    <!-- LOGOUT -->
+    <button id="logoutBtn">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+    </button>
+
+</div>
 
 </div>
 

@@ -2946,3 +2946,78 @@ if (upgradeBtn) {
         window.location.href = "pricing.html";
     });
 }
+
+/*=========================================================
+  MY PROFILE DROPDOWN
+=========================================================*/
+
+const myProfileBtn = document.getElementById("myProfileBtn");
+const myProfileDetails = document.getElementById("myProfileDetails");
+
+if (myProfileBtn && myProfileDetails) {
+
+    myProfileBtn.addEventListener("click", function () {
+
+        const isHidden =
+            myProfileDetails.style.display === "none" ||
+            myProfileDetails.style.display === "";
+
+        myProfileDetails.style.display =
+            isHidden ? "block" : "none";
+
+    });
+
+}
+
+// =========================================================
+// CHANGE PASSWORD
+// =========================================================
+
+const changePasswordBtn = document.getElementById("changePasswordBtn");
+
+if (changePasswordBtn) {
+
+    changePasswordBtn.addEventListener("click", async () => {
+
+        const newPassword = prompt("Enter your new password:");
+
+        if (!newPassword) {
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            alert("Password must be at least 6 characters.");
+            return;
+        }
+
+        const confirmPassword = prompt("Confirm your new password:");
+
+        if (newPassword !== confirmPassword) {
+            alert("Passwords do not match.");
+            return;
+        }
+
+        try {
+
+            const { error } = await client.auth.updateUser({
+                password: newPassword
+            });
+
+            if (error) {
+                alert(error.message);
+                return;
+            }
+
+            alert("Password updated successfully.");
+
+        } catch (err) {
+
+            console.error("CHANGE PASSWORD ERROR:", err);
+
+            alert("Unable to change password. Please try again.");
+
+        }
+
+    });
+
+}
