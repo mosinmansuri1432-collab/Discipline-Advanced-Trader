@@ -462,6 +462,50 @@ if (profileError) {
 
 });
 
+app.post("/api/upload-image", upload.single("image"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                error: "No image received"
+            });
+        }
+
+        const fileName =
+            Date.now() +
+            "-" +
+            crypto.randomUUID() +
+            ".png";
+
+        const { error } = await supabase.storage
+            .from("screenshots")
+            .upload(fileName, req.file.buffer, {
+                contentType: req.file.mimetype
+            });
+
+        if (error) {
+            throw error;
+        }
+
+        const { data } = supabase.storage
+            .from("screenshots")
+            .getPublicUrl(fileName);
+
+        res.json({
+            success: true,
+            url: data.publicUrl
+        });
+
+    } catch (err) {
+        console.error("IMAGE UPLOAD ERROR:", err);
+
+        res.status(500).json({
+            success: false,
+            error: err.message
+        });
+    }
+});
+
 app.listen(PORT, () => {
 
     console.log("KEY ID:", process.env.RAZORPAY_KEY_ID);
